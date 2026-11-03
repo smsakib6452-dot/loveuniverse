@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Love Universe ❤ — Sakib's Creation | 3D Text & Photo Mosaic Universe</title>
+<title>Love Universe ❤ — Sakib's Creation | 3D Text, Custom Letter & Photo Mosaic Universe</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#05010a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="Interactive 3D Love Universe & Photo Mosaic Studio — Created by Sakib's Creation (Where Creativity Meets Precision).">
+<meta name="description" content="Interactive 3D Love Universe, Custom Love Letter & Photo Mosaic Studio — Created by Sakib's Creation (Where Creativity Meets Precision).">
 <meta property="og:title" content="Love Universe ❤ — Sakib's Creation">
-<meta property="og:description" content="Create 3D shapes and portraits out of 32-language 'I love you' phrases OR out of your own multiple uploaded photos!">
+<meta property="og:description" content="Create 3D shapes and portraits out of 32-language 'I love you' phrases, your own love letter/names, OR up to 32 uploaded photos!">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤</text></svg>">
 <style>
@@ -17,26 +17,41 @@
   html,body{margin:0;width:100%;height:100%;height:100dvh;background:#05010a;overflow:hidden;font-family:system-ui,-apple-system,'Segoe UI','Nirmala UI','Noto Sans Bengali',Roboto,sans-serif;color:#ffd6e8;touch-action:none;user-select:none;-webkit-user-select:none}
   #gl{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;cursor:grab}
   #gl:active{cursor:grabbing}
-  .g{position:fixed;z-index:5;background:rgba(28,4,24,.68);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  .g{position:fixed;z-index:5;background:rgba(28,4,24,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     border:1px solid rgba(255,120,190,.36);border-radius:18px;box-shadow:0 8px 32px rgba(255,40,120,.22);transition:opacity .3s ease,transform .3s ease}
   #info{left:16px;top:16px;padding:11px 15px;max-width:calc(100vw - 230px)}
   .info-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
   #info h1{margin:0;font-size:18px;letter-spacing:.8px;background:linear-gradient(90deg,#ff7eb6,#ffd36e,#ff7832,#b79cff);-webkit-background-clip:text;background-clip:text;color:transparent;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   #info .sub-brand{font-size:10px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:#ff944d;background:rgba(255,120,50,.15);border:1px solid rgba(255,140,60,.45);padding:2px 8px;border-radius:99px}
-  #info div.stat-line{font-size:12px;margin-top:4px;opacity:.94}#info b{color:#fff}
+  #info div.stat-line{font-size:12px;margin-top:4px;opacity:.94;transition:opacity .25s ease}#info b{color:#fff}
 
-  /* Page / Mode Switcher Tabs (Text Universe vs Photo Mosaic Studio) */
-  .mode-tabs{display:flex;gap:5px;margin-top:7px;background:rgba(0,0,0,.35);padding:3px;border-radius:12px;border:1px solid rgba(255,130,190,.25)}
-  .mode-tabs button{padding:5px 10px;font-size:11.5px;border-radius:9px;border:0;background:transparent;color:#ffd0e8;flex:1;white-space:nowrap}
-  .mode-tabs button.on{background:linear-gradient(135deg,#ff2a55,#ff8a28);color:#fff;box-shadow:0 2px 10px rgba(255,60,110,.45)}
+  /* 3-Mode Switcher Tabs: 32 Languages | Custom Letter/Names | Photo Mosaic Studio */
+  .mode-tabs{display:flex;gap:4px;margin-top:7px;background:rgba(0,0,0,.38);padding:3px;border-radius:12px;border:1px solid rgba(255,130,190,.28)}
+  .mode-tabs button{padding:5px 9px;font-size:11.5px;border-radius:9px;border:0;background:transparent;color:#ffd0e8;flex:1;white-space:nowrap;transition:background .28s ease,color .25s ease,transform .22s cubic-bezier(.22,1,.36,1),box-shadow .28s ease}
+  .mode-tabs button.on{background:linear-gradient(135deg,#ff2a55,#ff8a28);color:#fff;box-shadow:0 2px 12px rgba(255,60,110,.5);transform:translateY(-1px)}
 
   /* Language Toggle Switch (BN / EN) at Top */
   #langSwitch{padding:4px 10px;font-size:11.5px;font-weight:700;border-radius:99px;background:linear-gradient(135deg,rgba(255,42,85,.35),rgba(255,138,40,.35));border:1px solid rgba(255,190,130,.55);color:#fff;cursor:pointer;box-shadow:0 0 12px rgba(255,100,50,.25)}
   #langSwitch:hover{transform:scale(1.04);background:linear-gradient(135deg,#ff2a55,#ff8a28)}
 
-  /* Photo Mosaic Studio Bar (Visible when Photo Mosaic Page is active) */
-  #mosaicPanel{display:none;align-items:center;gap:7px;background:rgba(255,120,40,.14);border:1px solid rgba(255,155,80,.45);padding:5px 10px;border-radius:13px;width:100%;justify-content:center;flex-wrap:wrap}
-  #mosaicPanel.show{display:flex}
+  /* Smooth Animated Mode Drawers (Custom Text Panel & Photo Mosaic Panel) */
+  #customTextPanel,#mosaicPanel{
+    display:flex;align-items:center;gap:7px;border-radius:13px;width:100%;justify-content:center;flex-wrap:wrap;
+    max-height:0;opacity:0;overflow:hidden;padding:0 10px;margin:0;border:0 solid transparent;
+    pointer-events:none;transform:translateY(8px) scale(.98);
+    transition:max-height .36s cubic-bezier(.22,1,.36,1),opacity .28s ease,transform .32s cubic-bezier(.22,1,.36,1),padding .28s ease,border-width .2s ease
+  }
+  #customTextPanel{background:rgba(255,50,140,.14)}
+  #customTextPanel.show{max-height:110px;opacity:1;padding:6px 10px;border:1px solid rgba(255,130,200,.45);pointer-events:auto;transform:translateY(0) scale(1)}
+  #customLetterInput{flex:1 1 260px;min-width:190px;max-width:520px;height:42px;font:600 12px/1.35 system-ui,-apple-system,'Segoe UI','Nirmala UI','Noto Sans Bengali',sans-serif;color:#fff;background:rgba(0,0,0,.42);border:1px solid rgba(255,150,210,.5);border-radius:10px;padding:6px 10px;resize:none;outline:none;user-select:text;-webkit-user-select:text}
+  #customLetterInput:focus{border-color:#ff8a28;box-shadow:0 0 10px rgba(255,138,40,.4)}
+  #applyCustomTextBtn{background:linear-gradient(135deg,#ff2a55,#ff8a28);border-color:rgba(255,220,160,.75);padding:7px 12px;font-size:12px}
+  #sampleLetterBtn{background:linear-gradient(135deg,#9c27b0,#e91e63);border-color:rgba(255,180,235,.6);padding:7px 11px;font-size:11.5px}
+  #phraseSlotBadge{font-size:11px;font-weight:700;color:#ffc4e4;background:rgba(0,0,0,.35);padding:4px 8px;border-radius:99px;border:1px solid rgba(255,140,200,.35);white-space:nowrap}
+
+  /* Photo Mosaic Studio Bar */
+  #mosaicPanel{background:rgba(255,120,40,.14)}
+  #mosaicPanel.show{max-height:110px;opacity:1;padding:5px 10px;border:1px solid rgba(255,155,80,.45);pointer-events:auto;transform:translateY(0) scale(1)}
   #addTilesBtn{background:linear-gradient(135deg,#ff5522,#ff9a29);border-color:rgba(255,220,160,.7);padding:6px 11px;font-size:12px}
   #targetFaceBtn{background:linear-gradient(135deg,#d81b60,#8e24aa);border-color:rgba(255,180,230,.65);padding:6px 11px;font-size:12px}
   #clearTilesBtn{background:rgba(255,255,255,.14);padding:5px 9px;font-size:11px}
@@ -46,7 +61,7 @@
   #tileThumbs img{width:24px;height:24px;border-radius:5px;object-fit:cover;border:1px solid rgba(255,200,140,.7);flex-shrink:0}
 
   /* Brand Badge — Desktop & Mobile Optimized */
-  #brand{right:16px;bottom:108px;padding:8px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;border-color:rgba(255,130,50,.5);background:rgba(20,5,18,.78);box-shadow:0 6px 24px rgba(255,100,30,.22)}
+  #brand{right:16px;bottom:112px;padding:8px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;border-color:rgba(255,130,50,.5);background:rgba(20,5,18,.78);box-shadow:0 6px 24px rgba(255,100,30,.22)}
   #brand:hover{transform:translateY(-2px) scale(1.02);border-color:#ff7b29;box-shadow:0 0 26px rgba(255,120,40,.45)}
   #brand img{height:38px;width:auto;max-width:175px;display:block;filter:drop-shadow(0 2px 8px rgba(255,120,40,.35))}
 
@@ -56,7 +71,7 @@
   #zoomRead{font-size:11px!important;padding:6px 8px!important;background:linear-gradient(135deg,rgba(255,42,85,.35),rgba(255,154,41,.35));border-color:rgba(255,180,120,.45)!important}
 
   /* Bottom Control Dock */
-  #bar{left:50%;bottom:max(12px,env(safe-area-inset-bottom,12px));transform:translateX(-50%);display:flex;flex-direction:column;gap:6px;padding:10px 12px;align-items:center;max-width:96vw;width:max-content}
+  #bar{left:50%;bottom:max(12px,env(safe-area-inset-bottom,12px));transform:translateX(-50%);display:flex;flex-direction:column;gap:4px;padding:10px 12px;align-items:center;max-width:96vw;width:max-content;transition:padding .28s ease}
   .bar-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;width:100%}
   button,select,input{font:600 12.5px system-ui,-apple-system,'Segoe UI','Nirmala UI','Noto Sans Bengali',sans-serif;border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:8px 11px;color:#fff;background:rgba(255,255,255,.12);cursor:pointer;outline:none;transition:all .2s ease;flex-shrink:0}
   button[data-label]::after{content:" " attr(data-label);font-weight:600;font-size:12px;letter-spacing:.2px}
@@ -64,21 +79,27 @@
   #rec{background:linear-gradient(135deg,rgba(255,45,85,.32),rgba(255,120,50,.32));border-color:rgba(255,130,150,.5)}
   #rec.on{background:linear-gradient(135deg,#ff1744,#ff6d00);animation:pulseRec 1.2s infinite}
   @keyframes pulseRec{0%,100%{box-shadow:0 0 12px rgba(255,30,70,.6)}50%{box-shadow:0 0 24px rgba(255,30,70,1)}}
-  input{width:170px;cursor:text;background:rgba(255,255,255,.18);border-color:rgba(255,150,200,.4);user-select:text;-webkit-user-select:text}
-  input:focus{border-color:#ff8533;box-shadow:0 0 12px rgba(255,133,51,.4);background:rgba(255,255,255,.24)}
   select option{color:#000;background:#fff}
   button.on{background:linear-gradient(135deg,#ff2a55,#ff9a29);border-color:rgba(255,215,150,.75);box-shadow:0 0 14px rgba(255,70,110,.5)}
-  #upBtn{background:linear-gradient(135deg,rgba(255,80,150,.38),rgba(255,140,40,.38));border-color:rgba(255,175,120,.55)}
   button:hover,select:hover{background:rgba(255,255,255,.24);transform:translateY(-1px)}
   button:active{transform:scale(.96)}
-  .input-wrap{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.32);padding:2px 8px 2px 3px;border-radius:13px;border:1px solid rgba(255,120,190,.32)}
-  .input-wrap input{border:0;background:transparent;padding:6px 7px;width:148px}
-  .input-wrap input:focus{box-shadow:none}
-  #charCnt{font-size:11px;color:#ffb8d9;opacity:.85;min-width:32px;text-align:right;font-variant-numeric:tabular-nums}
-  #hint{right:16px;top:16px;padding:10px 14px;font-size:12px;line-height:1.6;max-width:265px}
+
+  /* Unified Photo Capsule (Face Photo Shape + Upload Button paired together!) */
+  .photo-group{display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.34);padding:3px;border-radius:13px;border:1px solid rgba(255,150,110,.38)}
+  .photo-group button{padding:6px 10px;border-radius:10px}
+  #upBtn{background:linear-gradient(135deg,rgba(255,80,150,.38),rgba(255,140,40,.38));border-color:rgba(255,175,120,.55)}
+
+  /* Unified Name Capsule (✍ Name Shape Button + Input Box paired directly together!) */
+  .input-wrap{display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.36);padding:3px 8px 3px 3px;border-radius:13px;border:1px solid rgba(255,120,190,.38)}
+  .input-wrap button{padding:6px 10px;border-radius:10px}
+  .input-wrap input{border:0;background:rgba(255,255,255,.10);border-radius:8px;padding:6px 8px;width:138px;cursor:text;user-select:text;-webkit-user-select:text}
+  .input-wrap input:focus{background:rgba(255,255,255,.20);box-shadow:none}
+  #charCnt{font-size:11px;color:#ffb8d9;opacity:.85;min-width:30px;text-align:right;font-variant-numeric:tabular-nums}
+
+  #hint{right:16px;top:16px;padding:10px 14px;font-size:12px;line-height:1.6;max-width:270px}
   #cam{position:fixed;left:16px;bottom:140px;width:140px;border-radius:14px;transform:scaleX(-1);z-index:5;display:none;border:1px solid #ff7eb6}
   #gest{position:fixed;left:16px;top:135px;z-index:5;font-weight:700;text-shadow:0 0 10px #f0a}
-  #toast{position:fixed;top:95px;left:50%;transform:translateX(-50%) translateY(-15px);z-index:15;background:linear-gradient(135deg,#ff2a55,#ff7a29);color:#fff;padding:8px 16px;border-radius:99px;font:600 12.5px system-ui;opacity:0;pointer-events:none;transition:all .3s ease;box-shadow:0 6px 20px rgba(0,0,0,.45);white-space:nowrap}
+  #toast{position:fixed;top:95px;left:50%;transform:translateX(-50%) translateY(-15px);z-index:15;background:linear-gradient(135deg,#ff2a55,#ff7a29);color:#fff;padding:8px 16px;border-radius:99px;font:600 12.5px system-ui;opacity:0;pointer-events:none;transition:all .3s ease;box-shadow:0 6px 20px rgba(0,0,0,.45);white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   #msg{position:fixed;inset:0;z-index:9;background:#05010a;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
     font:600 18px/1.6 system-ui;color:#ff9ac8;padding:20px;transition:opacity .6s}
@@ -96,40 +117,45 @@
 
   /* Hide-UI Clean View Mode */
   body.clean-ui #bar,body.clean-ui #hint{opacity:0;pointer-events:none;transform:translate(-50%,20px)}
-  #toggleUi{position:fixed;left:16px;bottom:108px;z-index:6;padding:7px 11px;font-size:12px;border-radius:99px;background:rgba(28,4,24,.65);border:1px solid rgba(255,120,190,.35);backdrop-filter:blur(10px)}
+  #toggleUi{position:fixed;left:16px;bottom:112px;z-index:6;padding:7px 11px;font-size:12px;border-radius:99px;background:rgba(28,4,24,.65);border:1px solid rgba(255,120,190,.35);backdrop-filter:blur(10px)}
 
   /* ---- Mobile-First Responsive Layout ---- */
   @media (max-width:768px){
     .g{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
     #hint{display:none}
-    #info{left:10px;top:max(10px,env(safe-area-inset-top,10px));padding:7px 10px;max-width:58vw;border-radius:14px}
+    #info{left:10px;top:max(10px,env(safe-area-inset-top,10px));padding:7px 10px;max-width:60vw;border-radius:14px}
     #info h1{font-size:12.5px;gap:4px}
     #info .sub-brand{display:none}
     #info div.stat-line{font-size:10px;margin-top:2px}
-    .mode-tabs{margin-top:5px}
-    .mode-tabs button{padding:4px 7px;font-size:10px}
+    .mode-tabs{margin-top:5px;gap:3px}
+    .mode-tabs button{padding:4px 6px;font-size:9.5px}
     #langSwitch{padding:2px 7px;font-size:10px}
-    #brand{right:10px;top:max(10px,env(safe-area-inset-top,10px));bottom:auto;padding:6px 10px;border-radius:14px;max-width:37vw}
+    #brand{right:10px;top:max(10px,env(safe-area-inset-top,10px));bottom:auto;padding:6px 10px;border-radius:14px;max-width:35vw}
     #brand img{height:25px;max-width:100%;object-fit:contain}
 
-    #zoomBox{right:10px;top:42%;padding:5px;gap:5px;border-radius:14px}
+    #zoomBox{right:10px;top:38%;padding:5px;gap:5px;border-radius:14px}
     #zoomBox button{padding:7px 8px;font-size:12px;min-width:34px}
     #zoomRead{font-size:10px!important;padding:5px 6px!important}
 
-    #toggleUi{left:10px;bottom:auto;top:42%;transform:translateY(-50%);padding:7px 9px;font-size:11px}
+    #toggleUi{left:10px;bottom:auto;top:38%;transform:translateY(-50%);padding:7px 9px;font-size:11px}
 
-    #bar{bottom:max(8px,env(safe-area-inset-bottom,8px));width:96vw;max-width:96vw;padding:7px 8px;gap:5px;border-radius:16px}
-    #mosaicPanel{padding:4px 7px;gap:5px}
-    #tileThumbs{max-width:110px}
+    #bar{bottom:max(8px,env(safe-area-inset-bottom,8px));width:96vw;max-width:96vw;padding:6px 8px;gap:4px;border-radius:16px}
+    #customTextPanel.show{max-height:92px;padding:5px 7px;gap:4px}
+    #customLetterInput{height:34px;font-size:11px;min-width:130px;padding:4px 8px}
+    #mosaicPanel.show{max-height:86px;padding:4px 7px;gap:4px}
+    #tileThumbs{max-width:95px}
     #shapeRow{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding-bottom:2px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
     #shapeRow::-webkit-scrollbar{display:none}
     #toolRow{flex-wrap:wrap;gap:5px;justify-content:center}
     button,select{padding:6px 8px;font-size:11px;border-radius:10px}
     button[data-label]::after{font-size:10.5px}
-    .input-wrap{flex:1 1 120px;min-width:112px}
-    .input-wrap input{width:100%;font-size:11.5px;padding:5px 6px}
-    #theme{max-width:110px;text-overflow:ellipsis}
-    #den{max-width:80px}
+    .photo-group{padding:2px}
+    .photo-group button{padding:5px 7px;font-size:10.5px}
+    .input-wrap{flex:1 1 155px;min-width:145px;padding:2px 6px 2px 2px}
+    .input-wrap button{padding:5px 7px;font-size:10.5px}
+    .input-wrap input{width:100%;font-size:11px;padding:4px 6px}
+    #theme{max-width:112px;text-overflow:ellipsis}
+    #den{max-width:82px}
   }
 </style>
 </head>
@@ -146,17 +172,18 @@
     <button id="langSwitch" title="Switch Page Language (বাংলা / English)">🌐 বাংলা</button>
   </div>
   <div class="stat-line"><b id="cnt">0</b> × <span id="ilyLabel">“I love you”</span></div>
-  <div class="stat-line"><b>32</b> <span id="langWord">languages</span> · <span id="zmLabel">zoom</span> <b id="zm">1×</b></div>
+  <div class="stat-line"><b id="subStatNum">32</b> <span id="langWord">languages</span> · <span id="zmLabel">zoom</span> <b id="zm">1×</b></div>
   <div class="mode-tabs">
     <button id="tabText" class="on" title="Build shapes & portraits out of 32-language I Love You sentences">✨ Text Mode</button>
+    <button id="tabCustom" title="Build shapes & portraits out of your own love letter (চিঠি), poem, or multiple names!">📝 Custom Text</button>
     <button id="tabMosaic" title="Build shapes & portraits out of up to 32 uploaded photos!">🖼 Photo Mosaic</button>
   </div>
 </div>
 
 <div id="hint" class="g">
   🖱 Drag = rotate · 🔍 Scroll/pinch = <b>deep zoom up to 100×</b><br>
-  🖼 Switch to <b>Photo Mosaic</b> to build shapes & faces out of <b>up to 32 photos</b>!<br>
-  📸 Click <b>Save Photo</b> or <b>⏺ Record Video</b> to download!
+  📝 Use <b>Custom Text</b> to build shapes out of a <b>love letter or many names</b>!<br>
+  🖼 Use <b>Photo Mosaic</b> to build shapes & faces out of <b>up to 32 photos</b>!
 </div>
 
 <div id="brand" class="g" title="Click to display SAKIB'S CREATION in 3D particles!">
@@ -172,7 +199,15 @@
 <button id="toggleUi" title="Show/Hide Controls for Clean Fullscreen View">👁 UI</button>
 
 <div id="bar" class="g">
-  <!-- Dedicated Photo Mosaic Studio Bar (Appears when 🖼 Photo Mosaic Page is selected) -->
+  <!-- Dedicated Custom Letter / Multi-Name Studio Bar (Smoothly glides open when 📝 Custom Text tab is selected) -->
+  <div id="customTextPanel">
+    <textarea id="customLetterInput" maxlength="2000" placeholder="Write a love letter (চিঠি), poem, or multiple names separated by commas…">প্রিয়তমা তোমাকে অনেক ভালোবাসি, You are my forever love, তোমার হাসিতে আমার পৃথিবী, My Heart Beats For You, চিরদিন তোমারই থাকবো, Sakib's Creation ❤, তুমি আমার জীবনের শ্রেষ্ঠ উপহার, Forever & Always Together</textarea>
+    <button id="applyCustomTextBtn" title="Build all 3D shapes & portraits out of this custom text/letter!">✨ Apply Text</button>
+    <button id="sampleLetterBtn" title="Load a romantic Bangla & English love letter">💌 Love Letter</button>
+    <span id="phraseSlotBadge">8 Phrases</span>
+  </div>
+
+  <!-- Dedicated Photo Mosaic Studio Bar (Smoothly glides open when 🖼 Photo Mosaic tab is selected) -->
   <div id="mosaicPanel">
     <button id="addTilesBtn" title="Upload up to 32 photos to use as mini building blocks!">📚 Add Tile Pics (Max 32)</button>
     <span id="tileCountBadge">0 / 32 Pics</span>
@@ -181,22 +216,27 @@
     <button id="clearTilesBtn" title="Clear uploaded tile photos">🗑 Reset</button>
   </div>
 
+  <!-- Row 1: Pure 3D Shapes -->
   <div id="shapeRow" class="bar-row">
     <button data-s="0" class="on">❤ Heart</button>
     <button data-s="5">🌹 Rose</button>
     <button data-s="7">🌸 Flower</button>
     <button data-s="8">🌺 Lotus</button>
-    <button data-s="9" id="photoShapeBtn">🧑 Face Photo</button>
     <button data-s="1">🌍 Globe</button>
     <button data-s="2">🌌 Galaxy</button>
     <button data-s="4">∞ Infinity</button>
     <button data-s="6">🪐 Saturn</button>
-    <button data-s="3">✍ Name</button>
   </div>
+
+  <!-- Row 2: Paired Action Capsules (Face Photo + Upload Pic | ✍ Name + Input Box) & Studio Tools -->
   <div id="toolRow" class="bar-row">
-    <button id="upBtn" title="Upload any person's photo to morph into their 3D face!">📤 Upload Pic</button>
+    <div class="photo-group">
+      <button data-s="9" id="photoShapeBtn" title="Morph into 3D Face Portrait">🧑 Face Photo</button>
+      <button id="upBtn" title="Upload any person's photo to morph into their 3D face!">📤 Upload Pic</button>
+    </div>
     <div class="input-wrap">
-      <input id="name" value="LOVE" maxlength="60" placeholder="Type name / message (use | for line)">
+      <button data-s="3" id="nameShapeBtn" title="Display 3D Name / Headline Text">✍ Name</button>
+      <input id="name" value="LOVE" maxlength="60" placeholder="Type name (use | for line)">
       <span id="charCnt">4/60</span>
     </div>
     <select id="theme" title="Color Theme">
@@ -216,11 +256,11 @@
       <option value="1000000">10 lakh</option>
     </select>
     <button id="boom" data-label="Burst" title="Explode Burst Effect">💥</button>
-    <button id="music" data-label="Music" title="Ambient Space Music">🎵</button>
-    <button id="hand" title="Camera Hand Gesture Mode">✋ Hand mode</button>
+    <button id="music" data-label="Music" title="Romantic Piano & Music-Box Melody">🎵</button>
+    <button id="hand" title="Camera Hand Gesture Mode" style="display:none">✋ Hand mode</button>
     <button id="snap" data-label="Save Photo" title="Take & Download Standardized 1080x1350 HD Poster">📸</button>
     <button id="rec" data-label="Record Video" title="Record & Download Standardized 720x900 HD MP4 Video">⏺</button>
-    <button id="share" data-label="Share" title="Copy Shareable Link with Current Text">🔗</button>
+    <button id="share" data-label="Share" title="Copy Shareable Link with Current Text" style="display:none">🔗</button>
   </div>
 </div>
 
@@ -252,23 +292,71 @@ if(typeof THREE==='undefined')say('⚠ Could not load Three.js — check your in
 
 const IS_MOBILE=innerWidth<=768||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent||'');
 
-const PH=["I love you","நான் உன்னை காதலிக்கிறேன்","मैं तुमसे प्यार करता हूँ","Te amo","Je t'aime","Ich liebe dich","Ti amo","Eu te amo",
+const DEFAULT_PH=["I love you","நான் உன்னை காதலிக்கிறேன்","मैं तुमसे प्यार करता हूँ","Te amo","Je t'aime","Ich liebe dich","Ti amo","Eu te amo",
 "Ik hou van je","Jag älskar dig","Kocham cię","Seni seviyorum","Я тебя люблю","Я тебе кохаю","Σ' αγαπώ","నేను నిన్ను ప్రేమిస్తున్నాను",
 "ഞാൻ നിന്നെ സ്നേഹിക്കുന്നു","ನಾನು ನಿನ್ನನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ","আমি তোমাকে ভালোবাসি","مجھے تم سے محبت ہے","أحبك","אני אוהב אותך",
 "دوستت دارم","我爱你","愛してる","사랑해","ฉันรักเธอ","Anh yêu em","Aku cinta kamu","Mahal kita","Nakupenda","હું તને પ્રેમ કરું છું"];
 
-/* ---- 1. High-Clarity Text Atlas: 4 cols x 8 rows, 512x64 cells ---- */
+let activePhrases=DEFAULT_PH.slice();
+let currentMode='text'; // 'text' | 'custom' | 'mosaic'
+let customPhraseCount=8;
+let targetMosaic=0;
+let modeWavePhase=0;
+
+/* ---- 1. High-Clarity Dynamic Text Atlas: 4 cols x 8 rows, 512x64 cells (Supports 32 Langs OR Custom Letter/Names!) ---- */
 const at=document.createElement('canvas');at.width=2048;at.height=512;const ac=at.getContext('2d');
-ac.fillStyle='#fff';ac.textAlign='center';ac.textBaseline='middle';
-PH.forEach((p,i)=>{let f=42;const fam='"Nirmala UI","Segoe UI","Noto Sans","Arial Unicode MS",sans-serif';
-  ac.font=`bold ${f}px ${fam}`;const w=ac.measureText(p).width;if(w>460){f=Math.floor(f*460/w);ac.font=`bold ${f}px ${fam}`}
-  ac.fillText(p,(i%4)*512+256,Math.floor(i/4)*64+34)});
 const tex=new THREE.CanvasTexture(at);
 tex.anisotropy=4;
 tex.minFilter=THREE.LinearFilter;
 tex.magFilter=THREE.LinearFilter;
 
-/* ---- 2. Multi-Photo Mosaic Tile Atlas: 4 cols x 8 rows (Max 32 Photos, 128x128 each = 512x1024 Atlas) ---- */
+function renderTextAtlas(phrasesArray){
+  const list=(phrasesArray&&phrasesArray.length)?phrasesArray:DEFAULT_PH;
+  ac.clearRect(0,0,at.width,at.height);
+  ac.fillStyle='#fff';ac.textAlign='center';ac.textBaseline='middle';
+  const fam='"Nirmala UI","Segoe UI","Noto Sans Bengali","Noto Sans","Arial Unicode MS",sans-serif';
+  for(let i=0;i<32;i++){
+    const p=String(list[i%list.length]||'I love you').trim();
+    let f=42;
+    ac.font=`bold ${f}px ${fam}`;
+    const w=ac.measureText(p).width;
+    if(w>476){f=Math.max(18,Math.floor(f*476/w));ac.font=`bold ${f}px ${fam}`}
+    ac.fillText(p,(i%4)*512+256,Math.floor(i/4)*64+34);
+  }
+  tex.needsUpdate=true;
+}
+renderTextAtlas(DEFAULT_PH);
+
+/* Smart Parser: Splits any long love letter (চিঠি), poem, or list of names into up to 32 crystal-clear particle phrases */
+function parseCustomTextToPhrases(rawText){
+  const cleaned=(rawText||'').replace(/\r/g,'\n').trim();
+  if(!cleaned)return ["I love you"];
+  const segments=cleaned.split(/[\n|,;]+/).map(s=>s.trim()).filter(Boolean);
+  const chunks=[];
+  const maxChunkChars=26;
+  for(const seg of segments){
+    if(seg.length<=maxChunkChars){
+      chunks.push(seg);
+    }else{
+      const words=seg.split(/\s+/).filter(Boolean);
+      let curLine='';
+      for(const w of words){
+        if(!curLine){
+          curLine=w.length>maxChunkChars?w.slice(0,maxChunkChars):w;
+        }else if((curLine+' '+w).length<=maxChunkChars){
+          curLine+=' '+w;
+        }else{
+          chunks.push(curLine);
+          curLine=w.length>maxChunkChars?w.slice(0,maxChunkChars):w;
+        }
+      }
+      if(curLine)chunks.push(curLine);
+    }
+  }
+  return chunks.length?chunks.slice(0,32):["I love you"];
+}
+
+/* ---- 2. Multi-Photo Mosaic Tile Atlas: 4 cols x 8 rows (Max 32 Photos, 256x256 HD each = 1024x2048 Atlas) ---- */
 const MAX_TILES=32,TILE_SZ=256;
 const mosCanvas=document.createElement('canvas');mosCanvas.width=TILE_SZ*4;mosCanvas.height=TILE_SZ*8;
 const mosCtx=mosCanvas.getContext('2d');
@@ -278,9 +366,10 @@ mosTex.minFilter=THREE.LinearMipmapLinearFilter;
 mosTex.magFilter=THREE.LinearFilter;
 let tileImages=[];
 
-/* Populate clean mipmapped photo tiles (no thick white border that causes static noise at 1x zoom!) */
 function buildMosaicAtlas(){
   mosCtx.clearRect(0,0,mosCanvas.width,mosCanvas.height);
+  mosCtx.imageSmoothingEnabled=true;
+  mosCtx.imageSmoothingQuality='high';
   const count=tileImages.length;
   for(let i=0;i<MAX_TILES;i++){
     const col=i%4,row=(i/4)|0;
@@ -296,16 +385,16 @@ function buildMosaicAtlas(){
       const iw=img.naturalWidth||img.width||s,ih=img.naturalHeight||img.height||s;
       const sc=Math.max(s/iw,s/ih);
       const dw=iw*sc,dh=ih*sc;
-      mosCtx.drawImage(img,x0+pad+(s-dw)*0.5,y0+pad+(s-dh)*0.32,dw,dh);
+      mosCtx.drawImage(img,x0+pad+(s-dw)*0.5,y0+pad+(s-dh)*0.22,dw,dh);
     }else{
       const hue=(i*28)%360;
       const g=mosCtx.createRadialGradient(x0+TILE_SZ*0.5,y0+TILE_SZ*0.42,8,x0+TILE_SZ*0.5,y0+TILE_SZ*0.5,TILE_SZ*0.65);
-      g.addColorStop(0,`hsl(${hue},80%,76%)`);
-      g.addColorStop(1,`hsl(${(hue+35)%360},75%,42%)`);
+      g.addColorStop(0,`hsl(${hue},82%,74%)`);
+      g.addColorStop(1,`hsl(${(hue+35)%360},78%,40%)`);
       mosCtx.fillStyle=g;
       mosCtx.fillRect(x0+pad,y0+pad,s,s);
-      mosCtx.fillStyle='rgba(255,255,255,0.88)';
-      mosCtx.font='bold 46px system-ui,sans-serif';
+      mosCtx.fillStyle='rgba(255,255,255,0.92)';
+      mosCtx.font='bold 64px system-ui,sans-serif';
       mosCtx.textAlign='center';mosCtx.textBaseline='middle';
       const icons=['❤','🌹','✨','💖','🌸','🦋','💍','🥰'];
       mosCtx.fillText(icons[i%icons.length],x0+TILE_SZ*0.5,y0+TILE_SZ*0.52);
@@ -318,17 +407,22 @@ buildMosaicAtlas();
 
 /* ---- renderer & Responsive Mobile Camera Distance ---- */
 const cv=$('gl'),renderer=new THREE.WebGLRenderer({canvas:cv,antialias:false,alpha:false,preserveDrawingBuffer:true,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio||1,IS_MOBILE?1.25:1.75));
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,IS_MOBILE?1.25:1.80));
 renderer.setClearColor(0x05010a);
+if(renderer.capabilities&&renderer.capabilities.getMaxAnisotropy){
+  const maxAniso=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+  tex.anisotropy=maxAniso;
+  mosTex.anisotropy=maxAniso;
+}
 const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(50,1,.005,100);
 let baseZ=7,targetZ=7;
 const U={
   uMix:{value:1},uT:{value:0},uCol:{value:1},uBurst:{value:0},
-  uRes:{value:new THREE.Vector2()},uTex:{value:tex},uMosTex:{value:mosTex},uPh:{value:PH.length},
+  uRes:{value:new THREE.Vector2()},uTex:{value:tex},uMosTex:{value:mosTex},uPh:{value:32},
   uHueBase:{value:.9},uHueSpan:{value:.17},uRoseCol:{value:1},
   uTextBoost:{value:1},uIsPhoto:{value:0},uCrisp:{value:0},
   uKeep:{value:1},uZSpread:{value:0},uNormalBlend:{value:0},uDenScale:{value:1},
-  uMosaic:{value:0}
+  uMosaic:{value:0},uZoomRatio:{value:1},uModeWave:{value:0}
 };
 function resize(){
   renderer.setSize(innerWidth,innerHeight);
@@ -343,38 +437,71 @@ function resize(){
 addEventListener('resize',resize);resize();
 cam.position.z=baseZ*2.1;
 
-/* Upgraded Shader: Supports BOTH 32-Language Text Universe (uMosaic=0) AND Multi-Photo Mosaic Universe (uMosaic=1)! */
+/* Upgraded Non-Overlapping Shader with Smooth Mode Transition (uMosaic 0->1 & uModeWave 3D Ripple):
+   - Smoothly dissolves non-mosaic particles via Bayer threshold during Text <-> Mosaic transition.
+   - Smoothly morphs particle geometry from rectangular text strips (szText) to square photo tiles (szMos) while crossfading textures.
+   - Fast-path branches at uMosaic<=0.01 and uMosaic>=0.99 keep mobile GPUs at a locked 60 FPS! */
 const mat=new THREE.ShaderMaterial({uniforms:U,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
 vertexShader:`attribute vec3 aA;attribute vec3 aB;attribute vec2 aR;attribute vec3 aCol;
-uniform float uMix,uT,uCol,uBurst,uPh,uHueBase,uHueSpan,uRoseCol,uTextBoost,uIsPhoto,uCrisp,uKeep,uZSpread,uNormalBlend,uDenScale,uMosaic;
-uniform vec2 uRes;varying vec2 vUv;varying vec3 vC;varying float vPh,vK,vPpuNorm;
+uniform float uMix,uT,uCol,uBurst,uPh,uHueBase,uHueSpan,uRoseCol,uTextBoost,uIsPhoto,uCrisp,uKeep,uZSpread,uNormalBlend,uDenScale,uMosaic,uZoomRatio,uModeWave;
+uniform vec2 uRes;varying vec2 vUv;varying vec3 vC;varying float vPh,vK,vPpuNorm,vIsMos;
 vec3 hsv(float h,float s,float v){vec3 k=clamp(abs(fract(h+vec3(0.,.6667,.3333))*6.-3.)-1.,0.,1.);return v*mix(vec3(1.),k,s);}
 void main(){
-  if(aR.x>uKeep){gl_Position=vec4(2.,2.,2.,1.);return;}
+  vec3 cleanA=aA;
+  float isMosA=step(500.0,cleanA.z);
+  if(isMosA>0.5)cleanA.z-=1000.0;
+
+  vec3 cleanB=aB;
+  float isMosB=step(500.0,cleanB.z);
+  if(isMosB>0.5)cleanB.z-=1000.0;
+
   float t=clamp(uMix*1.5-aR.x*.5,0.,1.),e=t*t*(3.-2.*t);
-  vec3 p=mix(aA,aB,e);
-  p.z+=(fract(aR.y*97.3)-.5)*uZSpread;
+  float isMosCell=mix(isMosA,isMosB,step(0.5,e));
+  vIsMos=isMosCell;
+
+  /* Progressive Bayer dissolve for non-mosaic particles during Text <-> Mosaic transition */
+  float nonMosKeep=uKeep*(1.0-smoothstep(0.0,0.72,uMosaic));
+  if(isMosCell<0.5&&aR.x>nonMosKeep){gl_Position=vec4(2.,2.,2.,1.);return;}
+  if(uMosaic>0.98&&isMosCell<0.5){gl_Position=vec4(2.,2.,2.,1.);return;}
+
+  vec3 p=mix(cleanA,cleanB,e);
+
+  /* Silky 3D Ripple Wave during Mode Transitions (Text <-> Custom <-> Photo Mosaic) */
+  if(uModeWave>0.001){
+    float radial=clamp(length(p.xy)/3.8,0.0,1.0);
+    float wPhase=clamp(uModeWave*1.45-radial*0.42,0.0,1.0);
+    float wEnv=sin(wPhase*3.14159265);
+    float swAng=wEnv*0.42;
+    float cs=cos(swAng),sn=sin(swAng);
+    p.xz=mat2(cs,-sn,sn,cs)*p.xz;
+    p+=wEnv*vec3(sin(aR.y*34.+uT*5.)*0.18,cos(aR.x*30.+uT*5.)*0.18,0.34*sin(aR.y*21.));
+  }
+
+  float mSmooth=uMosaic*uMosaic*(3.0-2.0*uMosaic);
+  p.z+=(fract(aR.y*97.3)-.5)*uZSpread*(1.0-mSmooth);
   p+=sin(e*3.14159)*vec3(sin(aR.y*40.+uT),cos(aR.y*33.+uT),sin(aR.y*27.))*1.1;
   p*=uCol*(1.+uBurst*(.4+aR.y*1.3));
   float wigBase=clamp(1.3-(uTextBoost-1.)*.42,.06,1.);
-  float wig=mix(wigBase,wigBase*.05,max(uCrisp,uMosaic));
-  p+=.025*wig*vec3(sin(uT*1.5+aR.y*90.),cos(uT*1.3+aR.x*80.),sin(uT+aR.y*70.));
+  float wig=mix(wigBase,0.015,max(uCrisp,mSmooth));
+  p+=.022*wig*vec3(sin(uT*1.5+aR.y*90.),cos(uT*1.3+aR.x*80.),sin(uT+aR.y*70.));
   vec4 mv=modelViewMatrix*vec4(p,1.);
   float ppu=uRes.y*.5*projectionMatrix[1][1]/max(-mv.z,.002);
   vPpuNorm=clamp(pow(ppu/115.0,1.25)*uDenScale,0.22,1.65);
 
-  /* In Photo Mosaic Mode (uMosaic=1), each particle is a 1:1 square mini-photo tile! */
+  /* Smooth aspect-ratio morph between Text Strip (szText) and Square Photo Tile (szMos) */
   vec2 szText=vec2(.068,.0092)*uTextBoost;
-  vec2 szMos=vec2(.042,.042)*uTextBoost;
-  vec2 sz=mix(szText,szMos,uMosaic);
+  vec2 szMos=vec2(.127,.127);
+  vec2 sz=mix(szText,szMos,mSmooth*isMosCell);
 
-  /* Fine 4.0x4.0 splat at 1x zoom keeps 100% HD facial & petal resolution (never blocky 6.2x6.2 blotches!) */
-  float minW=mix(mix(mix(5.0,2.2,uCrisp),4.2,uNormalBlend),4.0,uMosaic);
-  float minH=mix(mix(mix(2.4,1.8,uCrisp),4.2,uNormalBlend),4.0,uMosaic);
-  float kx=max(1.,minW/(sz.x*ppu)),ky=max(1.,minH/(sz.y*ppu));
+  float minW=mix(mix(5.0,2.2,uCrisp),3.8,uNormalBlend);
+  float minH=mix(mix(2.4,1.8,uCrisp),3.8,uNormalBlend);
+  float kxText=max(1.,minW/(szText.x*ppu));
+  float kyText=max(1.,minH/(szText.y*ppu));
+  float kx=mix(kxText,1.0,mSmooth*isMosCell);
+  float ky=mix(kyText,1.0,mSmooth*isMosCell);
   mv.xy+=position.xy*sz*vec2(kx,ky);
   vK=sqrt(kx*ky);vUv=uv;vPh=floor(fract(aR.y*131.7)*uPh);
-  float tw=mix(.7+.3*sin(uT*2.+aR.x*60.),mix(.92+.08*sin(uT*1.5+aR.x*60.),.99+.01*sin(uT+aR.x*40.),max(uNormalBlend,uMosaic)),max(uCrisp,uMosaic));
+  float tw=mix(.7+.3*sin(uT*2.+aR.x*60.),mix(.92+.08*sin(uT*1.5+aR.x*60.),.99+.01*sin(uT+aR.x*40.),max(uNormalBlend,mSmooth)),max(uCrisp,mSmooth));
   vec3 themeC=hsv(uHueBase+uHueSpan*fract(aR.y*17.3)+.04*sin(uT*.5+p.y),.62+.3*fract(aR.x*9.1),tw);
   if(fract(aR.x*53.)>.97&&uIsPhoto<.5)themeC=vec3(1.,.95,.8);
   float photoLum=clamp(dot(aCol,vec3(.299,.587,.114))*1.15,.08,1.05);
@@ -383,49 +510,70 @@ void main(){
   vC=mix(themeC,roseC,uRoseCol);
   if(uKeep<0.65&&uMosaic<.5)vC=max(vC,vec3(.45,.28,.38));
   gl_Position=projectionMatrix*mv;}`,
-fragmentShader:`uniform sampler2D uTex,uMosTex;uniform float uPh,uCrisp,uNormalBlend,uMosaic,uIsPhoto,uTextBoost;varying vec2 vUv;varying vec3 vC;varying float vPh,vK,vPpuNorm;
+fragmentShader:`uniform sampler2D uTex,uMosTex;uniform float uPh,uCrisp,uNormalBlend,uMosaic,uIsPhoto,uTextBoost,uZoomRatio;varying vec2 vUv;varying vec3 vC;varying float vPh,vK,vPpuNorm,vIsMos;
 void main(){
   float c=mod(vPh,4.),r=floor(vPh/4.);
   vec2 dUv=(vUv-.5)*2.;
   float maxBox=max(abs(dUv.x),abs(dUv.y));
 
-  if(uMosaic>0.5){
-    /* ULTRA-CLEAN PHOTO MOSAIC STUDIO SHADER:
-       - At 1x zoom (uTextBoost ~ 1.0): Uses gentle ±7% luminance modulation on vC so the Target Face, Shirt & Rose look 100% HD, smooth & blotch-free!
-       - As user zooms in (uTextBoost > 1.15): Smoothly transitions to full HD 256x256 mini-photos (tile.rgb) with crisp polaroid borders! */
-    vec2 clampedUv=clamp(vUv,0.025,0.975);
+  /* Fast Path 1: Pure Photo Mosaic Mode (uMosaic >= 0.99) */
+  if(uMosaic>=0.99){
+    vec2 clampedUv=clamp(vUv,0.02,0.98);
     vec2 mosUv=vec2((c+clampedUv.x)/4.,(7.-r+clampedUv.y)/8.);
     vec4 tile=texture2D(uMosTex,mosUv);
 
     float tileLuma=dot(tile.rgb,vec3(.299,.587,.114));
-    float zoomReveal=smoothstep(1.12,2.65,uTextBoost);
-    /* At 1x zoom, keep 93% smooth vC + 7% subtle tile luma so faces & shirts never look blotchy; at zoom, deepen tile contrast */
-    float lumaMod=mix(0.93+0.14*(tileLuma-0.5),0.48+0.82*tileLuma,zoomReveal);
-    vec3 matchedCol=vC*clamp(lumaMod,0.25,1.35);
-    /* On abstract shapes (Heart/Galaxy, uCrisp=0), show more tile color at 1x; on Face/Rose (uCrisp=1), keep 96% pure vC at 1x and reveal full tile.rgb on zoom! */
-    float baseReveal=mix(0.32,0.04,max(uCrisp,uIsPhoto));
-    vec3 mosCol=mix(matchedCol,tile.rgb,clamp(baseReveal+zoomReveal*0.88,0.,0.92));
+    float zoomReveal=smoothstep(1.0,1.95,uZoomRatio);
+    vec3 faceTinted=mix(vC*(0.55+0.75*tileLuma),tile.rgb,0.48+0.48*zoomReveal);
+    vec3 shapeTinted=mix(vC*(0.65+0.55*tileLuma),tile.rgb,0.82+0.16*zoomReveal);
+    vec3 mosCol=mix(shapeTinted,faceTinted,uIsPhoto);
 
-    /* Polaroid frame appears cleanly only as you zoom in so 1x view is 100% smooth */
-    float isFrame=smoothstep(0.85,0.93,maxBox);
-    mosCol=mix(mosCol,vec3(0.98,0.95,0.92),isFrame*zoomReveal*0.85);
-    float roundedSq=clamp(1.-pow(maxBox,2.8),0.,1.);
-    float alphaOut=mix(roundedSq*0.96,0.96*(1.-smoothstep(0.93,0.98,maxBox)),zoomReveal);
-    gl_FragColor=vec4(mosCol,alphaOut);
+    float isFrame=smoothstep(0.88,0.95,maxBox);
+    mosCol=mix(mosCol,vec3(0.98,0.94,0.90),isFrame*(0.35+0.55*zoomReveal));
+    float edgeMask=1.0-smoothstep(0.95,0.995,maxBox);
+    gl_FragColor=vec4(mosCol,0.97*edgeMask);
     return;
   }
 
+  /* Compute Text Fragment */
   vec2 atlasUv=vec2((c+vUv.x)/4.,(7.-r+vUv.y)/8.);
   float a=texture2D(uTex,atlasUv).a;
   float dotMode=step(1.02,vK);
-  /* Smooth rounded-square kernel (1 - maxBox^3) fills diagonal corners between lattice cells so there are ZERO black pinholes on Face Photos! */
   float roundedSq=clamp(1.-pow(maxBox,2.8),0.,1.);
   float dotFill=mix(mix(.10,.15,uCrisp),roundedSq*0.96,uNormalBlend);
   a=max(a,dotMode*dotFill);
   float addAlpha=clamp((mix(1.6,0.92,uCrisp)/vK)*vPpuNorm,mix(.045,.024,uCrisp),1.);
-  float normAlpha=mix(1.0,0.94,dotMode);
+  float normAlpha=mix(1.0,0.95,dotMode);
   float alphaScale=mix(mix(1.0,addAlpha,dotMode),normAlpha,uNormalBlend);
-  gl_FragColor=vec4(vC,a*alphaScale);}`});
+  vec4 textFrag=vec4(vC,a*alphaScale);
+
+  /* Fast Path 2: Pure Text / Custom Text Mode (uMosaic <= 0.01) */
+  if(uMosaic<=0.01){
+    gl_FragColor=textFrag;
+    return;
+  }
+
+  /* Smooth Crossfade Transition Path (0.01 < uMosaic < 0.99) */
+  if(vIsMos<0.5){
+    textFrag.a*=clamp(1.0-uMosaic*1.35,0.0,1.0);
+    gl_FragColor=textFrag;
+    return;
+  }
+  vec2 clampedUv=clamp(vUv,0.02,0.98);
+  vec2 mosUv=vec2((c+clampedUv.x)/4.,(7.-r+clampedUv.y)/8.);
+  vec4 tile=texture2D(uMosTex,mosUv);
+  float tileLuma=dot(tile.rgb,vec3(.299,.587,.114));
+  float zoomReveal=smoothstep(1.0,1.95,uZoomRatio);
+  vec3 faceTinted=mix(vC*(0.55+0.75*tileLuma),tile.rgb,0.48+0.48*zoomReveal);
+  vec3 shapeTinted=mix(vC*(0.65+0.55*tileLuma),tile.rgb,0.82+0.16*zoomReveal);
+  vec3 mosCol=mix(shapeTinted,faceTinted,uIsPhoto);
+  float isFrame=smoothstep(0.88,0.95,maxBox);
+  mosCol=mix(mosCol,vec3(0.98,0.94,0.90),isFrame*(0.35+0.55*zoomReveal));
+  float edgeMask=1.0-smoothstep(0.95,0.995,maxBox);
+  vec4 mosFrag=vec4(mosCol,0.97*edgeMask);
+
+  float mSmooth=smoothstep(0.12,0.88,uMosaic);
+  gl_FragColor=mix(textFrag,mosFrag,mSmooth);}`});
 
 /* ---- Unbroken Smooth-3D 400x400 Reference Rose Sampler ---- */
 let roseCDF=null,roseRGB=null,roseSZ=400;
@@ -504,9 +652,9 @@ function sampleRoseParticles(N,posOut,colOut){
   }
 }
 
-/* ---- Full-Frame True-Beauty Portrait Engine ---- */
+/* ---- Ultra-Sharp HD Portrait Engine (420x504 with Vibrance & Edge Definition) ---- */
 let photoCDF=null,photoRGB=null,photoLum=null,photoAspect=0.85,hasCustomPhoto=false;
-const PHOTO_W=380,PHOTO_H=456;
+const PHOTO_W=420,PHOTO_H=504;
 
 function createDefaultPortraitCanvas(){
   const W=PHOTO_W,H=PHOTO_H,c=document.createElement('canvas');c.width=W;c.height=H;
@@ -550,6 +698,8 @@ function processPortraitSource(imgOrCanvas){
   const W=PHOTO_W,H=PHOTO_H,tot=W*H;
   const c=document.createElement('canvas');c.width=W;c.height=H;
   const ctx=c.getContext('2d');
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
   ctx.fillStyle='#05010a';ctx.fillRect(0,0,W,H);
 
   const sw=imgOrCanvas.naturalWidth||imgOrCanvas.width||W;
@@ -558,7 +708,7 @@ function processPortraitSource(imgOrCanvas){
 
   const sc=Math.max(W/sw,H/sh);
   const dw=sw*sc,dh=sh*sc;
-  const dx=(W-dw)*0.5,dy=(H-dh)*0.28;
+  const dx=(W-dw)*0.5,dy=(H-dh)*0.25;
   ctx.drawImage(imgOrCanvas,dx,dy,dw,dh);
 
   const d=ctx.getImageData(0,0,W,H).data;
@@ -566,7 +716,11 @@ function processPortraitSource(imgOrCanvas){
   photoLum=new Float32Array(tot);
 
   for(let i=0;i<tot;i++){
-    const r=d[i*4]/255,g=d[i*4+1]/255,b=d[i*4+2]/255;
+    let r=d[i*4]/255,g=d[i*4+1]/255,b=d[i*4+2]/255;
+    const l=0.299*r+0.587*g+0.114*b;
+    r=Math.min(1,Math.max(0,l+(r-l)*1.12));
+    g=Math.min(1,Math.max(0,l+(g-l)*1.12));
+    b=Math.min(1,Math.max(0,l+(b-l)*1.12));
     photoRGB[i*3]=r;photoRGB[i*3+1]=g;photoRGB[i*3+2]=b;
     photoLum[i]=0.299*r+0.587*g+0.114*b;
   }
@@ -577,7 +731,7 @@ function processPortraitSource(imgOrCanvas){
     for(let x=1;x<W-1;x++){
       const i=y*W+x;
       const blurL=(photoLum[i-W]+photoLum[i-1]+photoLum[i]+photoLum[i+1]+photoLum[i+W])*0.2;
-      const det=(photoLum[i]-blurL)*0.30;
+      const det=(photoLum[i]-blurL)*0.42;
       sharpRGB[i*3]=Math.min(1,Math.max(0,photoRGB[i*3]+det));
       sharpRGB[i*3+1]=Math.min(1,Math.max(0,photoRGB[i*3+1]+det));
       sharpRGB[i*3+2]=Math.min(1,Math.max(0,photoRGB[i*3+2]+det));
@@ -592,15 +746,15 @@ function processPortraitSource(imgOrCanvas){
     for(let x=0;x<W;x++){
       const nx=(x/W)*2-1;
       const i=y*W+x;
-      const fx=Math.max(0,(Math.abs(nx)-0.88)/0.12);
-      const fy=Math.max(0,(Math.abs(ny)-0.88)/0.12);
+      const fx=Math.max(0,(Math.abs(nx)-0.90)/0.10);
+      const fy=Math.max(0,(Math.abs(ny)-0.90)/0.10);
       const borderFade=Math.max(0,1-Math.min(1,fx*fx+fy*fy));
       photoRGB[i*3]*=borderFade;
       photoRGB[i*3+1]*=borderFade;
       photoRGB[i*3+2]*=borderFade;
 
       const l=photoLum[i];
-      const w=l>0.018?(0.85+0.15*Math.sqrt(l))*borderFade:0;
+      const w=l>0.015?(0.85+0.15*Math.sqrt(l))*borderFade:0;
       acc+=w;
       photoCDF[i]=acc;
     }
@@ -610,16 +764,15 @@ function processPortraitSource(imgOrCanvas){
 
 function samplePortraitParticles(N,posOut,colOut){
   if(!photoCDF)processPortraitSource(createDefaultPortraitCanvas());
-  const r=Math.random,W=PHOTO_W,H=PHOTO_H;
+  const W=PHOTO_W,H=PHOTO_H;
   const scaleX=3.40*Math.min(1.08,Math.max(0.82,photoAspect));
   const scaleY=3.80;
-  /* Pinhole-Free 2D Lattice Placement: Maps N particles onto an exact Mx x My grid covering 100% of portrait cells with ZERO empty gaps and O(1) mobile speed! */
   const Mx=Math.max(1,Math.round(Math.sqrt(N*(W/H))));
   const My=Math.max(1,Math.ceil(N/Mx));
   for(let i=0;i<N;i++){
     const gx=i%Mx,gy=(i/Mx)|0;
-    const ux=Math.min(0.999,Math.max(0.001,(gx+0.5+(r()-0.5)*0.22)/Mx));
-    const uy=Math.min(0.999,Math.max(0.001,(gy+0.5+(r()-0.5)*0.22)/My));
+    const ux=Math.min(0.999,Math.max(0.001,(gx+0.5)/Mx));
+    const uy=Math.min(0.999,Math.max(0.001,(gy+0.5)/My));
     const px=(ux*W)|0,py=(uy*H)|0;
     const lo=py*W+px;
 
@@ -630,7 +783,7 @@ function samplePortraitParticles(N,posOut,colOut){
     const pLum=photoLum[lo];
 
     const gFace=Math.exp(-(nx*nx/0.35+(ny-0.06)*(ny-0.06)/0.42));
-    const z=0.52*gFace+0.20*pLum*gFace;
+    const z=0.46*gFace+0.18*pLum*gFace;
 
     posOut[i*3]=x;
     posOut[i*3+1]=y;
@@ -642,13 +795,107 @@ function samplePortraitParticles(N,posOut,colOut){
   }
 }
 
+/* ---- Non-Overlapping 2D Mosaic Grid Injector (Guarantees ZERO Shingle Overlap on All Shapes!) ---- */
+const MOS_STEP=0.136,MOS_COLS=48,MOS_ROWS=56,MOS_MAX=2600;
+let activeMosaicCount=2200;
+
+function injectMosaicGrid(s,N,posArr,colArr){
+  if(s===9){
+    if(!photoCDF)processPortraitSource(createDefaultPortraitCanvas());
+    const W=PHOTO_W,H=PHOTO_H;
+    const scaleX=3.40*Math.min(1.08,Math.max(0.82,photoAspect));
+    const scaleY=3.80;
+    const cols=Math.min(MOS_COLS,Math.max(24,Math.round((2*scaleX)/MOS_STEP)));
+    const rows=Math.min(MOS_ROWS,Math.max(28,Math.round((2*scaleY)/MOS_STEP)));
+    let idx=0;
+    for(let r=0;r<rows;r++){
+      const uy=(r+0.5)/rows;
+      const ny=1-uy*2;
+      const y=((rows-1)*0.5-r)*MOS_STEP;
+      const py=Math.min(H-1,Math.max(0,(uy*H)|0));
+      for(let c=0;c<cols;c++){
+        if(idx>=MOS_MAX||idx>=N)break;
+        const ux=(c+0.5)/cols;
+        const nx=ux*2-1;
+        const x=(c-(cols-1)*0.5)*MOS_STEP;
+        const px=Math.min(W-1,Math.max(0,(ux*W)|0));
+        const lo=py*W+px;
+        const pR=photoRGB[lo*3],pG=photoRGB[lo*3+1],pB=photoRGB[lo*3+2];
+        const pLum=photoLum[lo];
+        const gFace=Math.exp(-(nx*nx/0.35+(ny-0.06)*(ny-0.06)/0.42));
+        const z=0.36*gFace+0.14*pLum*gFace;
+
+        posArr[idx*3]=x;
+        posArr[idx*3+1]=y;
+        posArr[idx*3+2]=z+1000.0;
+        if(colArr){
+          colArr[idx*3]=Math.min(1,Math.max(0.03,pR));
+          colArr[idx*3+1]=Math.min(1,Math.max(0.03,pG));
+          colArr[idx*3+2]=Math.min(1,Math.max(0.03,pB));
+        }
+        idx++;
+      }
+    }
+    activeMosaicCount=idx;
+    return;
+  }
+
+  const totCells=MOS_COLS*MOS_ROWS;
+  const counts=new Int32Array(totCells);
+  const sumZ=new Float32Array(totCells);
+  const sumR=colArr?new Float32Array(totCells):null;
+  const sumG=colArr?new Float32Array(totCells):null;
+  const sumB=colArr?new Float32Array(totCells):null;
+  const halfW=MOS_COLS*MOS_STEP*0.5,halfH=MOS_ROWS*MOS_STEP*0.5;
+
+  for(let i=0;i<N;i++){
+    const x=posArr[i*3],y=posArr[i*3+1],z=posArr[i*3+2];
+    const cx=Math.floor((x+halfW)/MOS_STEP);
+    const cy=Math.floor((halfH-y)/MOS_STEP);
+    if(cx>=0&&cx<MOS_COLS&&cy>=0&&cy<MOS_ROWS){
+      const cid=cy*MOS_COLS+cx;
+      counts[cid]++;
+      sumZ[cid]+=z;
+      if(colArr){
+        sumR[cid]+=colArr[i*3];
+        sumG[cid]+=colArr[i*3+1];
+        sumB[cid]+=colArr[i*3+2];
+      }
+    }
+  }
+
+  const minPts=Math.max(1,Math.floor(N/18000));
+  let idx=0;
+  for(let cy=0;cy<MOS_ROWS;cy++){
+    const y=((MOS_ROWS-1)*0.5-cy)*MOS_STEP;
+    for(let cx=0;cx<MOS_COLS;cx++){
+      const cid=cy*MOS_COLS+cx;
+      if(counts[cid]>=minPts&&idx<MOS_MAX&&idx<N){
+        const cnt=counts[cid];
+        const x=(cx-(MOS_COLS-1)*0.5)*MOS_STEP;
+        const z=(sumZ[cid]/cnt)*0.45;
+        posArr[idx*3]=x;
+        posArr[idx*3+1]=y;
+        posArr[idx*3+2]=z+1000.0;
+        if(colArr){
+          colArr[idx*3]=sumR[cid]/cnt;
+          colArr[idx*3+1]=sumG[cid]/cnt;
+          colArr[idx*3+2]=sumB[cid]/cnt;
+        }
+        idx++;
+      }
+    }
+  }
+  activeMosaicCount=Math.max(1,idx);
+}
+
 /* ---- Lazy / On-Demand Geometry Manager ---- */
 const SHAPE_COUNT=10;
 let geo,mesh,attrs=[],roseColAttr=null,photoColAttr=null,N=0,cur=0,prev=0,name='LOVE';
 const g3=()=>(Math.random()+Math.random()+Math.random()-1.5)/1.5;
 
 function updateBlendMode(s){
-  const isP=(s===9)||U.uMosaic.value>0.5;
+  const isP=(s===9)||targetMosaic>0.5||U.uMosaic.value>0.15;
   U.uNormalBlend.value=(s===9)?1:0;
   const wantBlend=isP?THREE.NormalBlending:THREE.AdditiveBlending;
   if(mat.blending!==wantBlend){
@@ -745,15 +992,18 @@ function ensureShape(s){
   if(s===5){
     const rColArr=roseColAttr?roseColAttr.array:new Float32Array(N*3);
     gen(5,N,a,rColArr);
+    injectMosaicGrid(5,N,a,rColArr);
     if(!roseColAttr)roseColAttr=new THREE.InstancedBufferAttribute(rColArr,3);
     else roseColAttr.needsUpdate=true;
   }else if(s===9){
     const pColArr=photoColAttr?photoColAttr.array:new Float32Array(N*3);
     gen(9,N,a,pColArr);
+    injectMosaicGrid(9,N,a,pColArr);
     if(!photoColAttr)photoColAttr=new THREE.InstancedBufferAttribute(pColArr,3);
     else photoColAttr.needsUpdate=true;
   }else{
     gen(s,N,a,null);
+    injectMosaicGrid(s,N,a,null);
   }
   attrs[s]=new THREE.InstancedBufferAttribute(a,3);
   return attrs[s];
@@ -805,8 +1055,39 @@ function textPts(N,o){
   }
 }
 
+/* 2D Bit-Reversed Bayer Interleaving for Uniform Sub-Grid Thinning in Text Mode */
+function bayerRank2D(gx,gy){
+  let v=0;
+  for(let b=0;b<10;b++){
+    v=(v<<2)|(((gx&1)<<1)|(gy&1));
+    gx>>=1;gy>>=1;
+  }
+  return (v+0.5)/1048576;
+}
+
+function updateTopStats(){
+  if(!N)return;
+  const t=I18N[lang];
+  if(currentMode==='mosaic'){
+    $('cnt').textContent=activeMosaicCount.toLocaleString('en-IN');
+    $('ilyLabel').textContent=t.mosStatLabel;
+    $('subStatNum').textContent=String(tileImages.length||8);
+    $('langWord').textContent=t.mosSubWord;
+  }else if(currentMode==='custom'){
+    $('cnt').textContent=N.toLocaleString('en-IN');
+    $('ilyLabel').textContent=t.customStatLabel;
+    $('subStatNum').textContent=String(customPhraseCount);
+    $('langWord').textContent=t.customSubWord;
+  }else{
+    $('cnt').textContent=N.toLocaleString('en-IN');
+    $('ilyLabel').textContent=t.ily;
+    $('subStatNum').textContent='32';
+    $('langWord').textContent=t.languages;
+  }
+}
+
 function build(n){
-  say(lang==='bn'?'মহাবিশ্ব তৈরি হচ্ছে…':'Building '+n.toLocaleString('en-IN')+' I-love-yous…');
+  say(lang==='bn'?'মহাবিশ্ব তৈরি হচ্ছে…':'Building '+n.toLocaleString('en-IN')+' particles…');
   setTimeout(()=>{
     if(mesh){scene.remove(mesh);geo.dispose()}
     N=n;
@@ -822,11 +1103,17 @@ function build(n){
     U.uIsPhoto.value=cur===9?1:0;
     U.uCrisp.value=(cur===5||cur===7||cur===8||cur===9)?1:0;
     updateBlendMode(cur);
-    const R=new Float32Array(N*2);for(let i=0;i<N*2;i++)R[i]=Math.random();
+    const Mx=Math.max(1,Math.round(Math.sqrt(N*(PHOTO_W/PHOTO_H))));
+    const R=new Float32Array(N*2);
+    for(let i=0;i<N;i++){
+      R[i*2]=bayerRank2D(i%Mx,(i/Mx)|0);
+      R[i*2+1]=Math.random();
+    }
     geo.setAttribute('aR',new THREE.InstancedBufferAttribute(R,2));
     geo.setAttribute('aA',activeAttr);geo.setAttribute('aB',activeAttr);geo.instanceCount=N;
     mesh=new THREE.Mesh(geo,mat);mesh.frustumCulled=false;scene.add(mesh);U.uMix.value=1;
-    $('cnt').textContent=N.toLocaleString('en-IN');$('msg').style.opacity=0;setTimeout(()=>$('msg').style.display='none',450);
+    updateTopStats();
+    $('msg').style.opacity=0;setTimeout(()=>$('msg').style.display='none',450);
   },30)}
 
 function setShape(s){if(s===cur&&U.uMix.value>=1)return;prev=cur;cur=s;
@@ -845,6 +1132,7 @@ function setShape(s){if(s===cur&&U.uMix.value>=1)return;prev=cur;cur=s;
   }
   geo.setAttribute('aA',prevAttr);geo.setAttribute('aB',nextAttr);U.uMix.value=0;
   document.querySelectorAll('[data-s]').forEach(b=>b.classList.toggle('on',+b.dataset.s===s));
+  updateTopStats();
   playChime(320+s*45)}
 
 function updateTextParticles(val,switchShape=true){
@@ -852,28 +1140,103 @@ function updateTextParticles(val,switchShape=true){
   name=raw.replace(/[a-z]/g,c=>c.toUpperCase());
   $('charCnt').textContent=raw.length+'/60';
   const aAttr=ensureShape(3);
-  textPts(N,aAttr.array);aAttr.needsUpdate=true;
+  textPts(N,aAttr.array);
+  injectMosaicGrid(3,N,aAttr.array,null);
+  aAttr.needsUpdate=true;
   if(switchShape){
     if(cur!==3)setShape(3);else{geo.setAttribute('aA',aAttr);U.uMix.value=1}
   }
   idle=performance.now();
 }
 
-/* ---- Page / Mode Switcher: ✨ Text Mode vs 🖼 Photo Mosaic Studio ---- */
-function setUniverseMode(isMosaic){
-  U.uMosaic.value=isMosaic?1:0;
-  $('tabText').classList.toggle('on',!isMosaic);
-  $('tabMosaic').classList.toggle('on',isMosaic);
-  $('mosaicPanel').classList.toggle('show',isMosaic);
-  updateBlendMode(cur);
-  if(isMosaic){
-    toast(lang==='bn'?'🖼 ফটো মোজাইক স্টুডিও: সর্বোচ্চ ৩২টি ছবি দিয়ে যেকোনো শেপ বা প্রিয়জনের ছবি বানান!':'🖼 Photo Mosaic Studio: Build shapes & faces out of up to 32 photos!');
-  }else{
-    toast(lang==='bn'?'✨ টেক্সট ইউনিভার্স মোড চালু হয়েছে':'✨ 32-Language Text Universe Mode active');
+/* ---- Smooth 3D Mode Transition Engine: ✨ Text Mode ('text') | 📝 Custom Text ('custom') | 🖼 Photo Mosaic ('mosaic') ---- */
+function applyCustomTextFromInput(showToastMsg=true){
+  const raw=$('customLetterInput').value;
+  const parsed=parseCustomTextToPhrases(raw);
+  customPhraseCount=parsed.length;
+  activePhrases=parsed;
+  renderTextAtlas(parsed);
+  $('phraseSlotBadge').textContent=customPhraseCount+(lang==='bn'?' টি বাক্যাংশ':' Phrases');
+  updateTopStats();
+  if(showToastMsg){
+    modeWavePhase=0.01;
+    playChime(587.33);
+    if(IS_MOBILE&&document.activeElement===$('customLetterInput'))$('customLetterInput').blur();
+    toast(lang==='bn'
+      ?`✨ আপনার লেখা (${customPhraseCount}টি বাক্যাংশ) দিয়ে পুরো থ্রিডি মহাবিশ্ব তৈরি হয়েছে! জুম করে পড়ুন`
+      :`✨ Built 3D Universe with your ${customPhraseCount} custom phrase(s)! Zoom in to read`);
   }
 }
-$('tabText').onclick=()=>setUniverseMode(false);
-$('tabMosaic').onclick=()=>setUniverseMode(true);
+
+let modeSwapTimer=null;
+function setUniverseMode(mode){
+  const prevMode=currentMode;
+  currentMode=mode;
+  const isMos=mode==='mosaic';
+  const isCust=mode==='custom';
+  targetMosaic=isMos?1:0;
+
+  /* Trigger silky 3D ripple wave & gentle camera alignment when switching modes */
+  if(prevMode!==mode){
+    modeWavePhase=0.01;
+    idle=performance.now();
+    if(isMos||cur===9||cur===5||cur===0||cur===3){
+      tY=Math.round(tY/6.283185)*6.283185;
+      tX=0;
+    }
+    playChime(isMos?659.25:(isCust?587.33:523.25));
+  }
+
+  $('tabText').classList.toggle('on',mode==='text');
+  $('tabCustom').classList.toggle('on',isCust);
+  $('tabMosaic').classList.toggle('on',isMos);
+  $('customTextPanel').classList.toggle('show',isCust);
+  $('mosaicPanel').classList.toggle('show',isMos);
+
+  clearTimeout(modeSwapTimer);
+  if(mode==='text'){
+    /* Swap text atlas right as the 3D ripple wave crests (~140ms) for a seamless morph */
+    modeSwapTimer=setTimeout(()=>{
+      activePhrases=DEFAULT_PH.slice();
+      renderTextAtlas(DEFAULT_PH);
+    },prevMode==='custom'?130:0);
+  }else if(isCust){
+    modeSwapTimer=setTimeout(()=>{
+      applyCustomTextFromInput(false);
+    },prevMode==='text'?130:0);
+  }
+
+  updateBlendMode(cur);
+  updateTopStats();
+
+  if(isMos){
+    toast(lang==='bn'?'🖼 ফটো মোজাইক স্টুডিও: প্রতিটি মিনি-ছবি এখন সম্পূর্ণ স্পষ্ট ও ওভারল্যাপ মুক্ত!':'🖼 Photo Mosaic Studio: Every mini-photo is crystal-clear & non-overlapping!');
+  }else if(isCust){
+    toast(lang==='bn'?'📝 নিজের চিঠি, কবিতা বা অনেকগুলো নাম লিখে সব থ্রিডি শেপ ও ছবি বানান!':'📝 Custom Text Mode: Write a love letter or multiple names to build any 3D shape!');
+  }else{
+    toast(lang==='bn'?'✨ ৩২ ভাষার ভালোবাসার বাক্য মোড চালু হয়েছে':'✨ 32-Language "I love you" Mode active');
+  }
+}
+
+$('tabText').onclick=()=>setUniverseMode('text');
+$('tabCustom').onclick=()=>setUniverseMode('custom');
+$('tabMosaic').onclick=()=>setUniverseMode('mosaic');
+
+$('applyCustomTextBtn').onclick=()=>applyCustomTextFromInput(true);
+let customDebounce=null;
+$('customLetterInput').oninput=()=>{
+  clearTimeout(customDebounce);
+  customDebounce=setTimeout(()=>{
+    if(currentMode==='custom')applyCustomTextFromInput(false);
+  },IS_MOBILE?380:220);
+};
+$('sampleLetterBtn').onclick=()=>{
+  $('customLetterInput').value=lang==='bn'
+    ?'প্রিয়তমা, প্রথম যেদিন তোমাকে দেখেছিলাম সেদিনই বুঝেছিলাম তুমি আমার জীবনের সবচেয়ে সুন্দর গল্প, তোমার হাসিতে আমার পৃথিবী আলো হয়ে ওঠে, শত জনমেও আমি শুধু তোমাকেই চাই, আই লাভ ইউ জান, তুমি আমার হৃদয়ের রানী, চিরদিন তোমারই থাকবো ❤'
+    :'My Dearest Love, from the moment I first saw you my whole universe changed forever, every beat of my heart whispers your name, you are my brightest star and sweetest dream, I love you endlessly, Today Tomorrow & Always ❤';
+  if(currentMode!=='custom')setUniverseMode('custom');
+  else applyCustomTextFromInput(true);
+};
 
 /* ---- Multi-Photo Tile Uploader (Max 32 Photos with Live Thumbnail Strip) ---- */
 function updateTileBadgeAndThumbs(){
@@ -885,6 +1248,7 @@ function updateTileBadgeAndThumbs(){
     t.src=im.src;
     box.appendChild(t);
   });
+  updateTopStats();
 }
 
 $('addTilesBtn').onclick=()=>$('mosaicInput').click();
@@ -893,6 +1257,7 @@ $('clearTilesBtn').onclick=()=>{
   tileImages=[];
   updateTileBadgeAndThumbs();
   buildMosaicAtlas();
+  modeWavePhase=0.01;
   toast(lang==='bn'?'🗑 টাইল ছবিগুলো রিসেট করা হয়েছে':'🗑 Tile photos reset');
 };
 
@@ -901,7 +1266,7 @@ $('mosaicInput').onchange=e=>{
   if(!files.length)return;
   const slotsLeft=MAX_TILES-tileImages.length;
   if(slotsLeft<=0){
-    toast(lang==='bn'?'⚠ সর্বোচ্চ ৩২টি ছবি যোগ করা গেছে! নতুন দিতে Reset চাপুন':'⚠ Max 32 photos reached! Click Reset to clear');
+    toast(lang==='bn'?'⚠ সর্বোচ্চ ৩২টি ছবি যোগ করা গেছে! নতুন দিতে রিসেট চাপুন':'⚠ Max 32 photos reached! Click Reset to clear');
     e.target.value='';
     return;
   }
@@ -922,8 +1287,18 @@ $('mosaicInput').onchange=e=>{
         if(loaded===toLoad.length){
           updateTileBadgeAndThumbs();
           buildMosaicAtlas();
-          if(U.uMosaic.value<0.5)setUniverseMode(true);
-          toast(lang==='bn'?`✨ ${tileImages.length}/32টি ছবি দিয়ে থ্রিডি মোজাইক তৈরি হয়েছে! জুম করে দেখুন`:`✨ ${tileImages.length}/32 photos built into 3D Mosaic! Zoom in to see each photo`);
+          if(!hasCustomPhoto&&tileImages.length>0){
+            processPortraitSource(tileImages[0]);
+            hasCustomPhoto=true;
+            const pAttr=ensureShape(9);
+            samplePortraitParticles(N,pAttr.array,photoColAttr.array);
+            injectMosaicGrid(9,N,pAttr.array,photoColAttr.array);
+            pAttr.needsUpdate=true;
+            photoColAttr.needsUpdate=true;
+          }
+          if(currentMode!=='mosaic')setUniverseMode('mosaic');
+          else modeWavePhase=0.01;
+          toast(lang==='bn'?`✨ ${tileImages.length}/32টি ছবি দিয়ে ওভারল্যাপ-মুক্ত HD মোজাইক তৈরি হয়েছে!`:`✨ ${tileImages.length}/32 photos built into non-overlapping HD Mosaic!`);
         }
       };
       im.src=ev.target.result;
@@ -936,15 +1311,21 @@ $('mosaicInput').onchange=e=>{
 /* ---- Upload Target Person's Photo to Morph into True-Beauty 3D Portrait ---- */
 function handlePhotoFile(file){
   if(!file)return;
-  toast(lang==='bn'?'⏳ প্রিয়জনের থ্রিডি পোর্ট্রেট তৈরি হচ্ছে…':'⏳ Creating 3D Face Portrait…');
+  toast(lang==='bn'?'⏳ প্রিয়জনের HD থ্রিডি পোর্ট্রেট তৈরি হচ্ছে…':'⏳ Creating HD 3D Face Portrait…');
   const reader=new FileReader();
   reader.onload=ev=>{
     const img=new Image();
     img.onload=()=>{
       processPortraitSource(img);
       hasCustomPhoto=true;
+      if(tileImages.length===0){
+        tileImages.push(img);
+        updateTileBadgeAndThumbs();
+        buildMosaicAtlas();
+      }
       const pAttr=ensureShape(9);
       samplePortraitParticles(N,pAttr.array,photoColAttr.array);
+      injectMosaicGrid(9,N,pAttr.array,photoColAttr.array);
       pAttr.needsUpdate=true;
       photoColAttr.needsUpdate=true;
       tY=Math.round(tY/6.283185)*6.283185;tX=0;
@@ -954,10 +1335,11 @@ function handlePhotoFile(file){
         geo.setAttribute('aCol',photoColAttr);
         geo.setAttribute('aA',ensureShape(prev));geo.setAttribute('aB',pAttr);
         U.uMix.value=0;U.uIsPhoto.value=1;U.uCrisp.value=1;U.uRoseCol.value=1;$('theme').value='5';
+        updateTopStats();
       }
-      toast(U.uMosaic.value>0.5
-        ?(lang==='bn'?'✨ আপনার ছবিগুলো দিয়ে প্রিয়জনের ফটো-মোজাইক প্রস্তুত! জুম করে দেখুন':'✨ Photo-of-Photos Mosaic Portrait Ready! Zoom in to see your tile pics')
-        :(lang==='bn'?'✨ অরিজিনাল কালার থ্রিডি পোর্ট্রেট প্রস্তুত!':'✨ True-Beauty 3D Portrait Ready!'));
+      toast(targetMosaic>0.5
+        ?(lang==='bn'?'✨ প্রিয়জনের HD ফটো-মোজাইক প্রস্তুত! প্রতিটি মিনি-ছবি এখন সম্পূর্ণ স্পষ্ট':'✨ HD Photo-Mosaic Portrait Ready! Every mini-photo is clear & unclipped')
+        :(lang==='bn'?'✨ অরিজিনাল কালার HD থ্রিডি পোর্ট্রেট প্রস্তুত!':'✨ True-Beauty HD 3D Portrait Ready!'));
     };
     img.src=ev.target.result;
   };
@@ -972,7 +1354,7 @@ addEventListener('drop',e=>{
   e.preventDefault();
   const files=e.dataTransfer&&e.dataTransfer.files;
   if(!files||!files.length)return;
-  if(files.length>1||U.uMosaic.value>0.5){
+  if(files.length>1||targetMosaic>0.5){
     const dt={target:{files,value:''}};
     $('mosaicInput').onchange(dt);
   }else{
@@ -991,6 +1373,7 @@ document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{
   setShape(s);
 });
 $('name').oninput=e=>updateTextParticles(e.target.value,true);
+$('name').onkeydown=e=>{if(e.key==='Enter'&&IS_MOBILE)$('name').blur()};
 $('den').onchange=e=>build(+e.target.value);
 $('boom').onclick=()=>{burst=1.8;playChime(180)};
 
@@ -1018,15 +1401,23 @@ const I18N={
     title:'LOVE UNIVERSE ❤',
     ily:'“I love you”',
     languages:'languages',
+    customStatLabel:'Custom Phrases',
+    customSubWord:'phrases in universe',
+    mosStatLabel:'HD Photo Tiles',
+    mosSubWord:'tile photos active',
     zoom:'zoom',
     tabText:'✨ Text Mode',
+    tabCustom:'📝 Custom Text',
     tabMosaic:'🖼 Photo Mosaic',
+    applyCustom:'✨ Apply Text',
+    sampleLetter:'💌 Love Letter',
+    customPlaceholder:'Write a love letter (চিঠি), poem, or multiple names separated by commas…',
     addTiles:'📚 Add Tile Pics (Max 32)',
     targetFace:'🎯 Target Face Pic',
     clearTiles:'🗑 Reset',
     read:'🔍 Read',
     upBtn:'📤 Upload Pic',
-    placeholder:'Type name / message (use | for line)',
+    placeholder:'Type name (use | for line)',
     burst:'Burst',
     music:'Music',
     hand:'✋ Hand mode',
@@ -1040,22 +1431,30 @@ const I18N={
     shapes:{0:'❤ Heart',5:'🌹 Rose',7:'🌸 Flower',8:'🌺 Lotus',9:'🧑 Face Photo',1:'🌍 Globe',2:'🌌 Galaxy',4:'∞ Infinity',6:'🪐 Saturn',3:'✍ Name'},
     themes:{5:'🌹 Ruby Gold (Rose/Photo)',0:'💖 Pink Love',1:'🔥 Sakib Sunset',2:'🌌 Cyber Cyan',3:'💜 Royal Nebula',4:'🌈 Rainbow'},
     dens:{10000:'10k (Clear Text)',25000:'25k (Light)',50000:'50k (Medium)',100000:'1 lakh',300000:'3 lakh',1000000:'10 lakh'},
-    hint:'🖱 Drag = rotate · 🔍 Scroll/pinch = <b>deep zoom up to 100×</b><br>🖼 Switch to <b>Photo Mosaic</b> to build shapes & faces out of <b>up to 32 photos</b>!<br>📸 Click <b>Save Photo</b> or <b>⏺ Record Video</b> to download!'
+    hint:'🖱 Drag = rotate · 🔍 Scroll/pinch = <b>deep zoom up to 100×</b><br>📝 Use <b>Custom Text</b> to build shapes out of a <b>love letter or many names</b>!<br>🖼 Use <b>Photo Mosaic</b> to build shapes & faces out of <b>up to 32 photos</b>!'
   },
   bn:{
     switchBtn:'🌐 English',
     title:'ভালোবাসার মহাবিশ্ব ❤',
     ily:'বার “আমি তোমাকে ভালোবাসি”',
     languages:'টি ভাষা',
+    customStatLabel:'বার আপনার নিজের লেখা/চিঠি',
+    customSubWord:'টি বাক্যাংশ',
+    mosStatLabel:'টি ওভারল্যাপ-মুক্ত HD ফটো টাইলস',
+    mosSubWord:'টি ছবি যুক্ত',
     zoom:'জুম',
-    tabText:'✨ টেক্সট মোড',
+    tabText:'✨ ৩২ ভাষা',
+    tabCustom:'📝 নিজের লেখা/চিঠি',
     tabMosaic:'🖼 ফটো মোজাইক',
+    applyCustom:'✨ লেখায় গড়ুন',
+    sampleLetter:'💌 প্রেমের চিঠি',
+    customPlaceholder:'বড় কোনো চিঠি, কবিতা, কিংবা কমা (,) দিয়ে অনেকগুলো নাম বা প্রিয় কথা লিখুন…',
     addTiles:'📚 গুচ্ছ ছবি দিন (সর্বোচ্চ ৩২টি)',
     targetFace:'🎯 প্রিয়জনের মূল ছবি',
     clearTiles:'🗑 রিসেট',
     read:'🔍 পড়ুন',
     upBtn:'📤 ছবি দিন',
-    placeholder:'নাম বা মেসেজ লিখুন (| দিয়ে নতুন লাইন)',
+    placeholder:'নাম লিখুন (| দিয়ে নতুন লাইন)',
     burst:'বিস্ফোরণ',
     music:'মিউজিক',
     hand:'✋ হ্যান্ড মোড',
@@ -1069,7 +1468,7 @@ const I18N={
     shapes:{0:'❤ হৃদয়',5:'🌹 গোলাপ',7:'🌸 ফুল',8:'🌺 পদ্ম',9:'🧑 ছবির মুখ',1:'🌍 পৃথিবী',2:'🌌 গ্যালাক্সি',4:'∞ ইনফিনিটি',6:'🪐 শনি গ্রহ',3:'✍ নাম'},
     themes:{5:'🌹 রুবি গোল্ড (গোলাপ/ছবি)',0:'💖 গোলাপি ভালোবাসা',1:'🔥 সাকিব সানসেট',2:'🌌 সাইবার সায়ান',3:'💜 রয়েল নেবুলা',4:'🌈 রংধনু'},
     dens:{10000:'১০ হাজার (স্পষ্ট লেখা)',25000:'২৫ হাজার (হালকা)',50000:'৫০ হাজার (মাঝারি)',100000:'১ লাখ',300000:'৩ লাখ',1000000:'১০ লাখ'},
-    hint:'🖱 ড্র্যাগ = ঘোরান · 🔍 স্ক্রল/পিঞ্চ = <b>১০০× পর্যন্ত জুম</b><br>🖼 <b>ফটো মোজাইক</b> ট্যাবে গিয়ে সর্বোচ্চ ৩২টি ছবি দিয়ে যেকোনো শেপ বা প্রিয়জনের ছবি বানান!<br>📸 <b>ছবি তুলুন</b> বা <b>⏺ ভিডিও করুন</b> দিয়ে ডাউনলোড করুন!'
+    hint:'🖱 ড্র্যাগ = ঘোরান · 🔍 স্ক্রল/পিঞ্চ = <b>১০০× পর্যন্ত জুম</b><br>📝 <b>নিজের লেখা/চিঠি</b> ট্যাবে গিয়ে বড় চিঠি বা অনেকগুলো নাম দিয়ে সব শেপ বানান!<br>🖼 <b>ফটো মোজাইক</b> ট্যাবে সর্বোচ্চ ৩২টি ছবি দিয়ে যেকোনো শেপ বা প্রিয়জনের ছবি বানান!'
   }
 };
 
@@ -1078,11 +1477,14 @@ function applyLang(l){
   const t=I18N[l];
   $('langSwitch').textContent=t.switchBtn;
   $('titleTxt').textContent=t.title;
-  $('ilyLabel').textContent=t.ily;
-  $('langWord').textContent=t.languages;
   $('zmLabel').textContent=t.zoom;
   $('tabText').textContent=t.tabText;
+  $('tabCustom').textContent=t.tabCustom;
   $('tabMosaic').textContent=t.tabMosaic;
+  $('applyCustomTextBtn').textContent=t.applyCustom;
+  $('sampleLetterBtn').textContent=t.sampleLetter;
+  $('customLetterInput').placeholder=t.customPlaceholder;
+  $('phraseSlotBadge').textContent=customPhraseCount+(l==='bn'?' টি বাক্যাংশ':' Phrases');
   $('addTilesBtn').textContent=t.addTiles;
   $('targetFaceBtn').textContent=t.targetFace;
   $('clearTilesBtn').textContent=t.clearTiles;
@@ -1110,6 +1512,7 @@ function applyLang(l){
   Array.from($('den').options).forEach(opt=>{
     if(t.dens[opt.value])opt.textContent=t.dens[opt.value];
   });
+  updateTopStats();
 }
 $('langSwitch').onclick=()=>{
   applyLang(lang==='en'?'bn':'en');
@@ -1309,7 +1712,7 @@ $('share').onclick=()=>{
   u.searchParams.set('text',$('name').value||'LOVE');
   u.searchParams.set('shape',String(cur));
   u.searchParams.set('theme',$('theme').value);
-  if(U.uMosaic.value>0.5)u.searchParams.set('mode','mosaic');
+  if(currentMode!=='text')u.searchParams.set('mode',currentMode);
   const str=u.toString();
   if(navigator.clipboard&&navigator.clipboard.writeText){
     navigator.clipboard.writeText(str).then(()=>toast(lang==='bn'?'🔗 কাস্টম লিংক কপি হয়েছে!':'🔗 Custom link copied!')).catch(()=>fallbackCopy(str));
@@ -1330,15 +1733,15 @@ const ptr=new Map();let pd=0,lastTap=0;
 function setZoomZ(zVal){
   idle=performance.now();
   targetZ=Math.min(MAX_Z,Math.max(MIN_Z,zVal));
-  $('zoomRead').classList.toggle('on',targetZ<baseZ*0.18);
+  $('zoomRead').classList.toggle('on',targetZ<baseZ*0.24);
 }
 
 $('zoomIn').onclick=()=>setZoomZ(targetZ*0.58);
 $('zoomOut').onclick=()=>setZoomZ(targetZ*1.72);
 $('zoomRead').onclick=()=>{
-  if(targetZ>baseZ*0.18){
-    setZoomZ(baseZ*0.055);
-    toast(U.uMosaic.value>0.5
+  if(targetZ>baseZ*0.24){
+    setZoomZ(targetMosaic>0.5?baseZ*0.18:baseZ*0.055);
+    toast(targetMosaic>0.5
       ?(lang==='bn'?'🔍 ডিপ জুম — প্রতিটি মিনি ছবি স্পষ্ট দেখুন!':'🔍 Deep Zoom — Inspect each mini photo tile!')
       :(lang==='bn'?'🔍 ডিপ রিড জুম — প্রতিটি বাক্য স্পষ্ট পড়ুন!':'🔍 Deep Read Zoom — Read every sentence clearly!'));
   }else{
@@ -1354,7 +1757,7 @@ cv.addEventListener('pointerdown',e=>{
   if(ptr.size===1){
     const now=performance.now();
     if(now-lastTap<280){
-      setZoomZ(targetZ>baseZ*0.25?baseZ*0.06:baseZ);
+      setZoomZ(targetZ>baseZ*0.28?(targetMosaic>0.5?baseZ*0.18:baseZ*0.06):baseZ);
       lastTap=0;
     }else lastTap=now;
   }
@@ -1401,7 +1804,8 @@ function handStep(){
     if(p.get('text')){const tx=p.get('text').slice(0,60);$('name').value=tx;name=tx.replace(/[a-z]/g,c=>c.toUpperCase());$('charCnt').textContent=tx.length+'/60';cur=3}
     if(p.get('shape')!==null){const s=+p.get('shape');if(s>=0&&s<SHAPE_COUNT)cur=s}
     if(p.get('theme')!==null){const thIdx=+p.get('theme');if(THEMES[thIdx]){$('theme').value=String(thIdx);applyTheme(thIdx)}}
-    if(p.get('mode')==='mosaic')setTimeout(()=>setUniverseMode(true),120);
+    if(p.get('mode')==='mosaic')setTimeout(()=>setUniverseMode('mosaic'),120);
+    else if(p.get('mode')==='custom')setTimeout(()=>setUniverseMode('custom'),120);
     document.querySelectorAll('[data-s]').forEach(b=>b.classList.toggle('on',+b.dataset.s===cur));
   }catch(_){}
 })();
@@ -1414,20 +1818,37 @@ function frame(){requestAnimationFrame(frame);if(!mesh)return;
   const now=performance.now(),dt=Math.min(.05,(now-t0)/1000);t0=now;U.uT.value+=dt;
   handStep();
   if(U.uMix.value<1)U.uMix.value=Math.min(1,U.uMix.value+dt/2.6);
-  if(now-idle>12000&&U.uMix.value>=1&&!ptr.size&&targetZ>baseZ*0.4&&cur!==9){idle=now-3000;demoIdx=(demoIdx+1)%DEMO_ORDER.length;setShape(DEMO_ORDER[demoIdx])}
-  if(now-idle>2500&&!handOn&&cur!==5&&cur!==9&&targetZ>baseZ*0.4)tY+=dt*.15;
+
+  /* Smooth GPU Mode Transition (Text <-> Custom <-> Photo Mosaic) */
+  if(Math.abs(targetMosaic-U.uMosaic.value)>0.001){
+    const mStep=dt*(IS_MOBILE?1.55:1.40);
+    if(U.uMosaic.value<targetMosaic)U.uMosaic.value=Math.min(targetMosaic,U.uMosaic.value+mStep);
+    else U.uMosaic.value=Math.max(targetMosaic,U.uMosaic.value-mStep);
+    updateBlendMode(cur);
+  }
+  if(modeWavePhase>0){
+    modeWavePhase+=dt*(IS_MOBILE?1.45:1.30);
+    if(modeWavePhase>=1){
+      modeWavePhase=0;
+      U.uModeWave.value=0;
+    }else{
+      U.uModeWave.value=modeWavePhase;
+    }
+  }
+
+  if(now-idle>12000&&U.uMix.value>=1&&!ptr.size&&targetZ>baseZ*0.4&&cur!==9&&targetMosaic<0.5){idle=now-3000;demoIdx=(demoIdx+1)%DEMO_ORDER.length;setShape(DEMO_ORDER[demoIdx])}
+  if(now-idle>2500&&!handOn&&cur!==5&&cur!==9&&targetZ>baseZ*0.4&&targetMosaic<0.5)tY+=dt*.15;
   burst*=.95;U.uBurst.value=burst;U.uCol.value+=(collapseT-U.uCol.value)*.12;
   rotY+=(tY-rotY)*.1;rotX+=(tX-rotX)*.1;mesh.rotation.set(rotX,rotY,0);
   cam.position.z+=(targetZ-cam.position.z)*.09;
   const zRatio=baseZ/cam.position.z;
-  const isMos=U.uMosaic.value>0.5;
-  U.uTextBoost.value=zRatio>1.30?Math.min(isMos?5.4:3.2,1+Math.log2(zRatio/1.30)*(isMos?1.05:0.62)):1;
-  if(zRatio>1.75){
-    const targetVisible=Math.max(isMos?950:1800,Math.min(N,N*Math.pow(1.75/zRatio,1.82)));
-    U.uKeep.value=Math.max((isMos?800:1400)/Math.max(1,N),Math.min(1,targetVisible/Math.max(1,N)));
-    U.uZSpread.value=Math.min(1.6,(zRatio-1.75)*0.12);
+  U.uZoomRatio.value=zRatio;
+  U.uTextBoost.value=zRatio>1.30?Math.min(3.2,1+Math.log2(zRatio/1.30)*0.62):1;
+  if(zRatio>1.65){
+    const targetVisible=Math.max(1600,Math.min(N,N*Math.pow(1.65/zRatio,1.85)));
+    U.uKeep.value=Math.max(1200/Math.max(1,N),Math.min(1,targetVisible/Math.max(1,N)));
+    U.uZSpread.value=Math.min(1.5,(zRatio-1.65)*0.11);
   }else{
-    /* Keep 100% of lattice cells at 1x zoom so Portrait & Rose have full HD resolution with ZERO missing cells! */
     U.uKeep.value=1;
     U.uZSpread.value=0;
   }
@@ -1468,7 +1889,11 @@ function decorateStudioPoster(ctx,W,H){
   ctx.textAlign='center';
   ctx.shadowColor='rgba(255,60,130,0.6)';
   ctx.shadowBlur=Math.round(14*sc);
-  const topTitle=U.uMosaic.value>0.5?'❤ LOVE UNIVERSE · 3D PHOTO MOSAIC ❤':'❤ LOVE UNIVERSE · 32 LANGUAGES OF LOVE ❤';
+  const topTitle=currentMode==='mosaic'
+    ?'❤ LOVE UNIVERSE · 3D PHOTO MOSAIC ❤'
+    :currentMode==='custom'
+      ?'❤ LOVE UNIVERSE · CUSTOM LOVE LETTER ❤'
+      :'❤ LOVE UNIVERSE · 32 LANGUAGES OF LOVE ❤';
   ctx.fillText(topTitle,W*0.5,pad+Math.round(44*sc));
   ctx.shadowBlur=0;
 
