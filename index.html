@@ -923,39 +923,194 @@ $('theme').onchange=e=>{
   playChime(440);
 };
 
-/* ---- Web Audio API Ambient Space Synth ---- */
-let actx=null,musicOn=false,oscNodes=[];
-function playChime(freq=440){
-  if(!musicOn||!actx)return;
+/* ---- Studio Romantic Piano & Music-Box Serenade Engine (Polyphonic Melody + Arpeggio + Lush Stereo Reverb/Delay) ---- */
+let actx=null,musicOn=false,musicTimer=null,masterGain=null,fxBus=null;
+
+/* MIDI Note to Frequency helper */
+const m2f=m=>440*Math.pow(2,(m-69)/12);
+
+function initAudioEngine(){
+  if(actx)return;
+  actx=new (window.AudioContext||window.webkitAudioContext)();
+  masterGain=actx.createGain();
+  masterGain.gain.value=0.75;
+
+  /* Warm Stereo Hall Echo / Reverb Bus */
+  const delay1=actx.createDelay(1.0),delay2=actx.createDelay(1.0);
+  delay1.delayTime.value=0.36;
+  delay2.delayTime.value=0.54;
+  const fb1=actx.createGain(),fb2=actx.createGain();
+  fb1.gain.value=0.34;fb2.gain.value=0.28;
+  const damp=actx.createBiquadFilter();
+  damp.type='lowpass';damp.frequency.value=2200;
+
+  fxBus=actx.createGain();
+  fxBus.gain.value=1.0;
+  fxBus.connect(masterGain);
+  fxBus.connect(damp);
+  damp.connect(delay1);
+  delay1.connect(fb1);fb1.connect(delay1);
+  delay1.connect(delay2);
+  delay2.connect(fb2);fb2.connect(delay2);
+  delay1.connect(masterGain);
+  delay2.connect(masterGain);
+  masterGain.connect(actx.destination);
+}
+
+/* Expressive Piano / Music-Box Note Synthesizer with Harmonic Overtones */
+function playRomanticNote(midi,vol=0.12,dur=1.9,isMelody=false){
+  if(!actx||!musicOn||!midi)return;
   try{
-    const o=actx.createOscillator(),g=actx.createGain();
-    o.type='sine';o.frequency.setValueAtTime(freq,actx.currentTime);
-    o.frequency.exponentialRampToValueAtTime(freq*1.5,actx.currentTime+0.45);
-    g.gain.setValueAtTime(0.06,actx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+0.5);
-    o.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+0.52);
+    const now=actx.currentTime;
+    const freq=m2f(midi);
+    const noteGain=actx.createGain();
+    noteGain.gain.setValueAtTime(0.0001,now);
+    /* Soft piano hammer attack + natural singing decay */
+    noteGain.gain.linearRampToValueAtTime(vol,now+0.018);
+    noteGain.gain.exponentialRampToValueAtTime(vol*0.42,now+0.28);
+    noteGain.gain.exponentialRampToValueAtTime(0.0001,now+dur);
+
+    /* Warm lowpass filter per note */
+    const flt=actx.createBiquadFilter();
+    flt.type='lowpass';
+    flt.frequency.setValueAtTime(isMelody?3600:1800,now);
+    flt.frequency.exponentialRampToValueAtTime(isMelody?950:520,now+dur);
+
+    /* Fundamental warm sine + delicate 2nd harmonic triangle + subtle music-box 3rd chime */
+    const o1=actx.createOscillator();
+    o1.type='sine';o1.frequency.setValueAtTime(freq,now);
+    o1.connect(flt);
+
+    const o2=actx.createOscillator(),g2=actx.createGain();
+    o2.type='triangle';o2.frequency.setValueAtTime(freq*2,now);
+    g2.gain.value=isMelody?0.22:0.10;
+    o2.connect(g2);g2.connect(flt);
+
+    if(isMelody){
+      const o3=actx.createOscillator(),g3=actx.createGain();
+      o3.type='sine';o3.frequency.setValueAtTime(freq*3,now);
+      g3.gain.setValueAtTime(0.07,now);
+      g3.gain.exponentialRampToValueAtTime(0.0001,now+0.35);
+      o3.connect(g3);g3.connect(flt);
+      o3.start(now);o3.stop(now+0.38);
+    }
+
+    flt.connect(noteGain);
+    noteGain.connect(fxBus);
+    o1.start(now);o1.stop(now+dur+0.05);
+    o2.start(now);o2.stop(now+dur+0.05);
   }catch(_){}
 }
+
+/* Soft Warm Strings Pad for Romantic Depth */
+function playWarmPadChord(midiArr,dur=3.2){
+  if(!actx||!musicOn)return;
+  try{
+    const now=actx.currentTime;
+    midiArr.forEach(m=>{
+      const o=actx.createOscillator(),g=actx.createGain(),f=actx.createBiquadFilter();
+      o.type='sine';o.frequency.value=m2f(m);
+      f.type='lowpass';f.frequency.value=750;
+      g.gain.setValueAtTime(0.0001,now);
+      g.gain.linearRampToValueAtTime(0.024,now+0.65);
+      g.gain.exponentialRampToValueAtTime(0.0001,now+dur);
+      o.connect(f);f.connect(g);g.connect(fxBus);
+      o.start(now);o.stop(now+dur+0.05);
+    });
+  }catch(_){}
+}
+
+function playChime(freq=523.25){
+  if(!musicOn||!actx)return;
+  try{
+    const now=actx.currentTime;
+    [1,1.25,1.5].forEach((mul,idx)=>{
+      const o=actx.createOscillator(),g=actx.createGain();
+      o.type='sine';o.frequency.setValueAtTime(freq*mul,now+idx*0.05);
+      g.gain.setValueAtTime(0.035,now+idx*0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001,now+idx*0.05+0.65);
+      o.connect(g);g.connect(fxBus);
+      o.start(now+idx*0.05);o.stop(now+idx*0.05+0.7);
+    });
+  }catch(_){}
+}
+
+/* 64-Step Romantic Piano & Music-Box Composition ("River Flows / Canon in F" Inspired Love Serenade):
+   8 Chords x 8 Eighth-Note Steps = 64 steps per cycle (Key of F Major / D Minor) */
+const ROMANTIC_CHORDS=[
+  /* 1. Dm9 (D3, A3, D4, F4, A4) */ [50,57,62,65,69],
+  /* 2. Bbmaj7 (Bb2, F3, Bb3, D4, F4) */ [46,53,58,62,65],
+  /* 3. Fmaj7 (F2, C3, F3, A3, C4) */ [41,48,53,57,60],
+  /* 4. Cadd9 (C3, G3, C4, E4, G4) */ [48,55,60,64,67],
+  /* 5. Dm9 (D3, A3, D4, F4, A4) */ [50,57,62,65,69],
+  /* 6. Gm7 (G2, D3, G3, Bb3, D4) */ [43,50,55,58,62],
+  /* 7. Bbmaj7 (Bb2, F3, Bb3, D4, F4) */ [46,53,58,62,65],
+  /* 8. Asus4 -> A7 (A2, E3, A3, C#4, E4) */ [45,52,57,61,64]
+];
+const ARP_PATTERN=[0,1,2,3,4,3,2,1];
+/* Expressive Singing Melody (0 = sustain previous note) */
+const ROMANTIC_MELODY=[
+  /* Bar 1 (Dm): A5 - G5 - A5 - F5 - D5 */
+  81, 80, 81, 77, 74, 0,  77, 81,
+  /* Bar 2 (Bb): Bb5 - A5 - G5 - F5 - D5 */
+  82, 0,  81, 79, 77, 0,  74, 77,
+  /* Bar 3 (F):  A5 - C6 - A5 - G5 - F5 */
+  81, 0,  84, 81, 79, 77, 72, 77,
+  /* Bar 4 (C):  G5 - E5 - C5 - D5 - E5 */
+  79, 0,  76, 72, 74, 76, 79, 81,
+  /* Bar 5 (Dm): F5 - A5 - D6 - C6 - A5 */
+  77, 81, 86, 0,  84, 81, 77, 74,
+  /* Bar 6 (Gm): Bb5 - A5 - G5 - F5 - G5 */
+  82, 0,  81, 79, 77, 79, 82, 86,
+  /* Bar 7 (Bb): D6 - C6 - Bb5 - A5 - G5 */
+  86, 84, 82, 81, 79, 77, 74, 77,
+  /* Bar 8 (A7): A5 - G5 - F5 - E5 - D5 */
+  81, 0,  79, 77, 76, 0,  73, 76
+];
+
+let musicStep=0;
 $('music').onclick=()=>{
   if(musicOn){
-    musicOn=false;$('music').classList.remove('on');
-    oscNodes.forEach(n=>{try{n.stop()}catch(_){}});oscNodes=[];
-    toast(lang==='bn'?'🔇 মিউজিক বন্ধ':'🔇 Ambient music off');return;
+    musicOn=false;
+    $('music').classList.remove('on');
+    clearInterval(musicTimer);musicTimer=null;
+    if(masterGain&&actx){
+      try{masterGain.gain.linearRampToValueAtTime(0.0001,actx.currentTime+0.3)}catch(_){}
+    }
+    toast(lang==='bn'?'🔇 রোমান্টিক মিউজিক বন্ধ':'🔇 Romantic music off');
+    return;
   }
   try{
-    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    initAudioEngine();
     if(actx.state==='suspended')actx.resume();
-    const freqs=[130.81,196.00,246.94,293.66];
-    freqs.forEach((f,i)=>{
-      const o=actx.createOscillator(),g=actx.createGain();
-      o.type=i%2?'triangle':'sine';o.frequency.value=f;
-      g.gain.value=0.022;
-      o.connect(g);g.connect(actx.destination);o.start();
-      oscNodes.push(o);
-    });
+    masterGain.gain.setValueAtTime(0.75,actx.currentTime);
     musicOn=true;$('music').classList.add('on');
-    playChime(523.25);
-    toast(lang==='bn'?'🎵 কসমিক মিউজিক চালু হয়েছে':'🎵 Cosmic ambient sound on');
+    musicStep=0;
+
+    const tick=()=>{
+      if(!musicOn)return;
+      const bar=(musicStep>>3)%ROMANTIC_CHORDS.length;
+      const stepInBar=musicStep&7;
+      const chord=ROMANTIC_CHORDS[bar];
+
+      /* 1. Play warm pad on beat 0 of each bar */
+      if(stepInBar===0){
+        playWarmPadChord([chord[0],chord[2],chord[3]],2.4);
+      }
+      /* 2. Play flowing harp/piano arpeggio accompaniment */
+      const arpNote=chord[ARP_PATTERN[stepInBar]];
+      playRomanticNote(arpNote,stepInBar===0?0.095:0.055,1.45,false);
+
+      /* 3. Play expressive romantic lead melody */
+      const melNote=ROMANTIC_MELODY[musicStep%ROMANTIC_MELODY.length];
+      if(melNote>0){
+        playRomanticNote(melNote,0.135,1.85,true);
+      }
+      musicStep=(musicStep+1)%64;
+    };
+    tick();
+    musicTimer=setInterval(tick,275); /* ~109 BPM expressive flowing romantic tempo */
+    toast(lang==='bn'?'🎵 রোমান্টিক পিয়ানো ও মিউজিক বক্স সুর চালু হয়েছে':'🎵 Romantic Piano & Music-Box melody on');
   }catch(_){toast('⚠ Audio unavailable')}
 };
 
