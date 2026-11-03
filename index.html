@@ -201,10 +201,10 @@
 <div id="bar" class="g">
   <!-- Dedicated Custom Letter / Multi-Name Studio Bar (Smoothly glides open when 📝 Custom Text tab is selected) -->
   <div id="customTextPanel">
-    <textarea id="customLetterInput" maxlength="2000" placeholder="Write a love letter (চিঠি), poem, or multiple names separated by commas…">প্রিয়তমা তোমাকে অনেক ভালোবাসি, You are my forever love, তোমার হাসিতে আমার পৃথিবী, My Heart Beats For You, চিরদিন তোমারই থাকবো, Sakib's Creation ❤, তুমি আমার জীবনের শ্রেষ্ঠ উপহার, Forever & Always Together</textarea>
+    <textarea id="customLetterInput" maxlength="2000" placeholder="আপনার মনের কথা, চিঠি বা প্রিয় নামগুলো লিখুন যা দিয়ে থ্রিডি ডিজাইন তৈরি হবে…"></textarea>
     <button id="applyCustomTextBtn" title="Build all 3D shapes & portraits out of this custom text/letter!">✨ Apply Text</button>
     <button id="sampleLetterBtn" title="Load a romantic Bangla & English love letter">💌 Love Letter</button>
-    <span id="phraseSlotBadge">8 Phrases</span>
+    <span id="phraseSlotBadge">0 Phrases</span>
   </div>
 
   <!-- Dedicated Photo Mosaic Studio Bar (Smoothly glides open when 🖼 Photo Mosaic tab is selected) -->
@@ -299,7 +299,7 @@ const DEFAULT_PH=["I love you","நான் உன்னை காதலிக�
 
 let activePhrases=DEFAULT_PH.slice();
 let currentMode='text'; // 'text' | 'custom' | 'mosaic'
-let customPhraseCount=8;
+let customPhraseCount=0;
 let targetMosaic=0;
 let modeWavePhase=0;
 
@@ -1151,7 +1151,19 @@ function updateTextParticles(val,switchShape=true){
 
 /* ---- Smooth 3D Mode Transition Engine: ✨ Text Mode ('text') | 📝 Custom Text ('custom') | 🖼 Photo Mosaic ('mosaic') ---- */
 function applyCustomTextFromInput(showToastMsg=true){
-  const raw=$('customLetterInput').value;
+  const raw=($('customLetterInput').value||'').trim();
+  if(!raw){
+    customPhraseCount=0;
+    $('phraseSlotBadge').textContent='0'+(lang==='bn'?' টি বাক্যাংশ':' Phrases');
+    updateTopStats();
+    if(showToastMsg){
+      $('customLetterInput').focus();
+      toast(lang==='bn'
+        ?'✍ আগে বক্সে আপনার মনের কথা লিখুন, অথবা 💌 প্রেমের চিঠি বাটনে ক্লিক করুন!'
+        :'✍ Please write your text in the box first, or click 💌 Love Letter!');
+    }
+    return;
+  }
   const parsed=parseCustomTextToPhrases(raw);
   customPhraseCount=parsed.length;
   activePhrases=parsed;
@@ -1411,7 +1423,7 @@ const I18N={
     tabMosaic:'🖼 Photo Mosaic',
     applyCustom:'✨ Apply Text',
     sampleLetter:'💌 Love Letter',
-    customPlaceholder:'Write a love letter (চিঠি), poem, or multiple names separated by commas…',
+    customPlaceholder:'আপনার মনের কথা, চিঠি বা প্রিয় নামগুলো লিখুন যা দিয়ে থ্রিডি ডিজাইন তৈরি হবে…',
     addTiles:'📚 Add Tile Pics (Max 32)',
     targetFace:'🎯 Target Face Pic',
     clearTiles:'🗑 Reset',
@@ -1448,7 +1460,7 @@ const I18N={
     tabMosaic:'🖼 ফটো মোজাইক',
     applyCustom:'✨ লেখায় গড়ুন',
     sampleLetter:'💌 প্রেমের চিঠি',
-    customPlaceholder:'বড় কোনো চিঠি, কবিতা, কিংবা কমা (,) দিয়ে অনেকগুলো নাম বা প্রিয় কথা লিখুন…',
+    customPlaceholder:'আপনার মনের কথা, চিঠি বা প্রিয় নামগুলো লিখুন যা দিয়ে থ্রিডি ডিজাইন তৈরি হবে…',
     addTiles:'📚 গুচ্ছ ছবি দিন (সর্বোচ্চ ৩২টি)',
     targetFace:'🎯 প্রিয়জনের মূল ছবি',
     clearTiles:'🗑 রিসেট',
